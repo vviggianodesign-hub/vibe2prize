@@ -9,9 +9,9 @@
 
 import fs from 'fs-extra';
 import path from 'node:path';
-import { SemanticNormalizer } from '../layouts/semantic-vocabulary.js';
-import { LLMGridPlacer } from '../llm/grid-placement-engine.js';
-import { TemplateMigrator } from '../layouts/template-migrator.js';
+import { SemanticNormalizer } from '../core/layout/semantic-vocabulary.js';
+import { LLMGridPlacer } from '../core/llm/grid-placement-engine.js';
+import { TemplateMigrator } from '../core/layout/template-migrator.js';
 
 const ROOT = path.resolve(process.cwd());
 const SLIDES_DIR = path.join(ROOT, 'slides');

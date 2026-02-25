@@ -11,11 +11,12 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 const ROOT = path.resolve(process.cwd());
-const SLIDES_DIR = path.join(ROOT, 'slides');
-const LAYOUTS_DIR = path.join(ROOT, 'layouts');
+const SLIDES_DIR = path.join(ROOT, 'templates');
+const LAYOUTS_DIR = path.join(ROOT, 'core', 'layout');
 const DEFAULT_CONFIG_PATHS = [
-  path.join(ROOT, 'config', 'slides.json'),
+  path.join(ROOT, 'templates', 'slide_sets', 'slides.json'),
   path.join(ROOT, 'slide_sets', 'slides.json'),
+  path.join(ROOT, 'config', 'slides.json'),
 ];
 let resolvedConfigPath = null;
 const DIST_DIR = path.join(ROOT, 'dist');
