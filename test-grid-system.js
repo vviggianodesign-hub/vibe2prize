@@ -7,11 +7,11 @@
  * Usage: node test-grid-system.js
  */
 
-import { LLMGridPlacer } from './llm/grid-placement-engine.js';
-import { LLMGridInterface } from './llm/grid-interface.js';
-import { TemplateMigrator } from './layouts/template-migrator.js';
-import { SemanticNormalizer } from './layouts/semantic-vocabulary.js';
-import { gridTemplates, getTemplateSemanticAreas, validateContentPlacement } from './layouts/grid-templates.js';
+import { LLMGridPlacer } from './core/llm/grid-placement-engine.js';
+import { LLMGridInterface } from './core/llm/grid-interface.js';
+import { TemplateMigrator } from './core/layout/template-migrator.js';
+import { SemanticNormalizer } from './core/layout/semantic-vocabulary.js';
+import { gridTemplates, getTemplateSemanticAreas, validateContentPlacement } from './core/layout/grid-templates.js';
 
 class GridSystemTester {
   constructor() {

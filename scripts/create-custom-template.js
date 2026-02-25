@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
-const TEMPLATES_FILE = path.join(ROOT, 'layouts/grid-templates.js');
+const TEMPLATES_FILE = path.join(ROOT, 'core', 'layout', 'grid-templates.js');
 
 // Template creation wizard
 class TemplateCreator {

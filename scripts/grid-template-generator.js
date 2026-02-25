@@ -11,7 +11,7 @@ import fs from 'fs-extra';
 import path from 'node:path';
 
 const ROOT = path.resolve(process.cwd());
-const TEMPLATES_FILE = path.join(ROOT, 'layouts', 'grid-templates.js');
+const TEMPLATES_FILE = path.join(ROOT, 'core', 'layout', 'grid-templates.js');
 
 function parseArguments() {
   const args = process.argv.slice(2);

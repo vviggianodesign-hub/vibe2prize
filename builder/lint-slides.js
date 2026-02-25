@@ -7,10 +7,11 @@ import matter from 'gray-matter';
 const GRID_AREA_REGEX = /<GridArea\s+[^>]*area=\"([^\"]+)\"/g;
 
 const ROOT = path.resolve(process.cwd());
-const SLIDES_DIR = path.join(ROOT, 'slides');
+const SLIDES_DIR = path.join(ROOT, 'templates');
 const DEFAULT_CONFIG_PATHS = [
-  path.join(ROOT, 'config', 'slides.json'),
+  path.join(ROOT, 'templates', 'slide_sets', 'slides.json'),
   path.join(ROOT, 'slide_sets', 'slides.json'),
+  path.join(ROOT, 'config', 'slides.json'),
 ];
 let resolvedConfigPath = null;
 

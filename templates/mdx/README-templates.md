@@ -50,8 +50,8 @@ This collection contains 10 professionally designed EPAM slide templates using t
 
 ### **Quick Start**
 ```bash
-# Copy a template to your slides directory
-cp assets/3_mdx_slides/epam-executive-summary.mdx slides/my-new-slide.mdx
+# Copy a template into the repo templates collection
+cp templates/mdx/epam-executive-summary.mdx templates/mdx/my-new-slide.mdx
 
 # Edit the content while maintaining the structure
 # Build and test
@@ -115,7 +115,7 @@ tags: ["relevant", "tags"]
 ### **Changing Templates**
 ```bash
 # Test template migration
-node scripts/content-analyzer.js --file slides/my-slide.mdx --migrate-from dual-panel --migrate-to presentation-grid
+node builder/content-analyzer.js --file templates/mdx/my-slide.mdx --migrate-from dual-panel --migrate-to presentation-grid
 ```
 
 ### **Brand Customization**
@@ -129,10 +129,10 @@ node scripts/content-analyzer.js --file slides/my-slide.mdx --migrate-from dual-
 ### **Template Performance**
 ```bash
 # Analyze all templates
-node scripts/content-analyzer.js --directory assets/3_mdx_slides --verbose
+node builder/content-analyzer.js --directory templates/mdx --verbose
 
 # Get template recommendations
-node scripts/content-analyzer.js --directory assets/3_mdx_slides --template dual-panel
+node builder/content-analyzer.js --directory templates/mdx --template dual-panel
 ```
 
 ### **Quality Metrics**
@@ -164,28 +164,24 @@ node scripts/content-analyzer.js --directory assets/3_mdx_slides --template dual
 ## File Structure
 
 ```
-assets/3_mdx_slides/
-├── epam-executive-summary.mdx      # Executive overview
-├── epam-magazine-feature.mdx       # Magazine-style feature
-├── epam-case-study.mdx             # 2x2 case study
-├── epam-technical-insights.mdx     # Technical with sidebar
-├── epam-metrics-dashboard.mdx      # Performance dashboard
-├── epam-process-workflow.mdx       # Three-panel process
-├── epam-client-testimonial.mdx     # Client success story
-├── epam-research-findings.mdx      # Research insights
-├── epam-innovation-showcase.mdx    # 3x3 technology grid
-├── epam-strategic-roadmap.mdx      # Strategic planning
-└── README-templates.md             # This documentation
+templates/
+├── mdx/
+│   ├── epam-executive-summary.mdx
+│   ├── epam-magazine-feature.mdx
+│   ├── ...
+│   └── README-templates.md
+└── slide_sets/
+    └── epam-complete-slides.json
 ```
 
 ## Integration with Main System
 
 ### **Adding to Main Presentation**
 ```bash
-# Copy template to main slides directory
-cp assets/3_mdx_slides/epam-executive-summary.mdx slides/
+# Copy template and register in slide set
+cp templates/mdx/epam-executive-summary.mdx templates/mdx/
 
-# Update slide order in config/slides.json
+# Update slide order in templates/slide_sets/*.json
 # Rebuild presentation
 npm run build:slides
 ```
@@ -193,7 +189,7 @@ npm run build:slides
 ### **Content Analysis Integration**
 ```bash
 # Analyze template performance
-node scripts/content-analyzer.js --directory assets/3_mdx_slides --template dual-panel
+node builder/content-analyzer.js --directory templates/mdx --template dual-panel
 
 # Test template compatibility
 node test-grid-system.js

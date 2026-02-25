@@ -14,7 +14,7 @@ import { LLMGridPlacer } from '../core/llm/grid-placement-engine.js';
 import { TemplateMigrator } from '../core/layout/template-migrator.js';
 
 const ROOT = path.resolve(process.cwd());
-const SLIDES_DIR = path.join(ROOT, 'slides');
+const SLIDES_DIR = path.join(ROOT, 'templates', 'mdx');
 
 function parseArguments() {
   const args = process.argv.slice(2);
@@ -350,7 +350,7 @@ Usage:
 
 Options:
   --file <path>           Analyze specific MDX file
-  --directory <path>      Analyze all MDX files in directory (default: slides/)
+  --directory <path>      Analyze all MDX files in directory (default: templates/mdx)
   --template <name>       Specify target template for placement suggestions
   --migrate-from <name>   Simulate migration from template
   --migrate-to <name>     Simulate migration to template
@@ -360,16 +360,16 @@ Options:
 
 Examples:
   # Analyze single slide
-  node scripts/content-analyzer.js --file slides/01-executive-summary.mdx
+  node builder/content-analyzer.js --file templates/mdx/epam-executive-summary.mdx
 
   # Analyze all slides with template suggestions
-  node scripts/content-analyzer.js --directory slides --template dual-panel
+  node builder/content-analyzer.js --directory templates/mdx --template dual-panel
 
   # Simulate template migration
-  node scripts/content-analyzer.js --directory slides --migrate-from dual-panel --migrate-to presentation-grid
+  node builder/content-analyzer.js --directory templates/mdx --migrate-from dual-panel --migrate-to presentation-grid
 
   # Generate detailed report
-  node scripts/content-analyzer.js --directory slides --verbose --output analysis-report.json
+  node builder/content-analyzer.js --directory templates/mdx --verbose --output analysis-report.json
 `);
     return;
   }

@@ -8,9 +8,10 @@
     "example": "example"
   },
   "scripts": {
-    "build:slides": "node scripts/build-slides.js",
-    "dev": "node scripts/build-slides.js --watch",
-    "lint:slides": "node scripts/lint-slides.js",
+    "build:slides": "node builder/build-slides.js",
+    "dev": "node builder/build-slides.js --watch",
+    "lint:slides": "node builder/lint-slides.js",
+    "analyze:content": "node builder/content-analyzer.js",
     "build": "npm run build:slides"
   },
   "keywords": [],
