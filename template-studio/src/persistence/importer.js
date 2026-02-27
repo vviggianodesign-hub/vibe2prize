@@ -205,9 +205,16 @@ export function parseMDXFrontmatter(content) {
   return { success: true, errors: [], frontmatter, body };
 }
 
-function getInputById(id) {
+export function getInputById(id) {
   if (typeof document === 'undefined') return null;
   return document.getElementById(id);
+}
+
+export function setCheckboxChecked(id, checked) {
+  const input = getInputById(id);
+  if (input) {
+    input.checked = Boolean(checked);
+  }
 }
 
 export function applyFrontmatterToState(frontmatter) {
@@ -271,6 +278,48 @@ export function applyFrontmatterToState(frontmatter) {
       variant: applied?.variant || brandInput.variant || state.brand?.variant
     };
     emitBrandStateChanged(state.brand);
+  }
+
+  if (frontmatter?.pagination && typeof frontmatter.pagination === 'object') {
+    const fallbackPagination = state.pagination || { pageNumber: 1, totalSlides: 1, label: 'Page' };
+    const parsePositive = (value, fallback) => {
+      const parsed = sanitizeNumber(value, fallback);
+      return parsed > 0 ? parsed : fallback;
+    };
+    const pageNumber = parsePositive(frontmatter.pagination.pageNumber, fallbackPagination.pageNumber || 1);
+    const totalSlides = Math.max(pageNumber, parsePositive(frontmatter.pagination.totalSlides, fallbackPagination.totalSlides || pageNumber));
+    const label = typeof frontmatter.pagination.label === 'string' && frontmatter.pagination.label.trim()
+      ? frontmatter.pagination.label.trim()
+      : (fallbackPagination.label || 'Page');
+    state.pagination = {
+      pageNumber,
+      totalSlides,
+      label,
+    };
+    updateInputValue('pageNumberInput', state.pagination.pageNumber);
+    updateInputValue('totalSlidesInput', state.pagination.totalSlides);
+    updateInputValue('pageLabelInput', state.pagination.label);
+  }
+
+  if (frontmatter?.previewFlags && typeof frontmatter.previewFlags === 'object') {
+    const normalize = (value, fallback) => {
+      if (typeof value === 'boolean') return value;
+      if (typeof value === 'string') {
+        const lowered = value.toLowerCase();
+        if (lowered === 'true') return true;
+        if (lowered === 'false') return false;
+      }
+      return fallback;
+    };
+    const fallbackFlags = state.previewFlags || { previewChrome: true, showDiagnostics: true, showRegionOutlines: true };
+    state.previewFlags = {
+      previewChrome: normalize(frontmatter.previewFlags.previewChrome, fallbackFlags.previewChrome),
+      showDiagnostics: normalize(frontmatter.previewFlags.showDiagnostics, fallbackFlags.showDiagnostics),
+      showRegionOutlines: normalize(frontmatter.previewFlags.showRegionOutlines, fallbackFlags.showRegionOutlines),
+    };
+    setCheckboxChecked('previewChromeToggle', state.previewFlags.previewChrome);
+    setCheckboxChecked('diagnosticsToggle', state.previewFlags.showDiagnostics);
+    setCheckboxChecked('regionOutlineToggle', state.previewFlags.showRegionOutlines);
   }
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));

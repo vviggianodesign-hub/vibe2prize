@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import fs from 'fs/promises';
 import path from 'path';
 import { validateFrontmatter } from '../../core/mdx/schema.js';
-import { importMDXContent } from '../src/persistence/importer.js';
+import { importMDXContent, applyFrontmatterToState } from '../src/persistence/importer.js';
 import { state, resetState } from '../src/state.js';
 
 describe('MDX Importer', () => {
@@ -212,21 +212,48 @@ regions:
 # Body
 `;
 
-    const result = await importMDXContent(mdxContent);
-    assert(result.success);
-    assert.strictEqual(state.templateName, 'Responsive Template');
-    assert.strictEqual(state.rows, 24);
-    assert.strictEqual(state.columns, 36);
-    assert.strictEqual(state.gap, '2rem');
-    assert.strictEqual(state.canvasWidth, 1440);
-    assert.strictEqual(state.canvasHeight, 900);
-    assert.strictEqual(state.columnSize, '1fr');
-    assert.strictEqual(state.rowSize, 'auto');
-    assert.deepStrictEqual(state.exclusions, { top: 2, bottom: 3, left: 1, right: 4 });
-    assert.strictEqual(state.boxes.length, 1);
-    const [hero] = state.boxes;
-    assert.strictEqual(hero.gridY, 2);
-    assert.strictEqual(hero.gridHeight, 8);
+    const { window } = new (await import('jsdom')).JSDOM(`
+      <div>
+        <input id="templateName" />
+        <input id="rowCount" />
+        <input id="columnCount" />
+        <input id="gridGap" />
+        <input id="canvasWidth" />
+        <input id="canvasHeight" />
+        <input id="columnSize" />
+        <input id="rowSize" />
+        <input id="exclusionTop" />
+        <input id="exclusionBottom" />
+        <input id="exclusionLeft" />
+        <input id="exclusionRight" />
+      </div>
+    `);
+    global.window = window;
+    global.document = window.document;
+    global.CustomEvent = window.CustomEvent;
+    global.Event = window.Event;
+
+    try {
+      const result = await importMDXContent(mdxContent);
+      assert(result.success);
+      applyFrontmatterToState(result.frontmatter);
+
+      assert.strictEqual(state.templateName, 'Responsive Template');
+      assert.strictEqual(state.canvasWidth, 1440);
+      assert.strictEqual(state.canvasHeight, 900);
+      assert.strictEqual(state.columnSize, '1fr');
+      assert.strictEqual(state.rowSize, 'auto');
+      assert.deepStrictEqual(state.exclusions, { top: 2, bottom: 3, left: 1, right: 4 });
+      assert.strictEqual(state.boxes.length, 1);
+      const [hero] = state.boxes;
+      assert.strictEqual(hero.gridY, 2);
+      assert.strictEqual(hero.gridHeight, 8);
+    } finally {
+      delete global.window;
+      delete global.document;
+      delete global.CustomEvent;
+      delete global.Event;
+    }
   });
 
   it('should apply brand metadata from frontmatter to state', async () => {
@@ -257,5 +284,82 @@ brand:
     const result = await importMDXContent(mdxContent);
     assert(result.success);
     assert.deepStrictEqual(state.brand, { id: 'epam', variant: 'dark' });
+  });
+
+  it('should apply pagination and preview flags when DOM inputs exist', async () => {
+    const mdxContent = `---
+title: Pagination Template
+maxWords: 120
+phase: concept
+layout:
+  type: grid
+  template: pagination-template
+  components:
+    - type: GridArea
+      id: pager
+      role: page-number
+      area: pager
+regions:
+  - id: pager
+    role: page-number
+    area: pager
+pagination:
+  pageNumber: 4
+  totalSlides: 24
+  label: Deck
+previewFlags:
+  previewChrome: false
+  showDiagnostics: false
+  showRegionOutlines: false
+---
+
+# Pagination Template
+`;
+
+    const domHtml = `
+      <div>
+        <input id="pageNumberInput" value="1" />
+        <input id="totalSlidesInput" value="12" />
+        <input id="pageLabelInput" value="Page" />
+        <input id="previewChromeToggle" type="checkbox" checked />
+        <input id="regionOutlineToggle" type="checkbox" checked />
+        <input id="diagnosticsToggle" type="checkbox" checked />
+      </div>
+    `;
+
+    const { window } = new (await import('jsdom')).JSDOM(domHtml);
+    global.window = window;
+    global.document = window.document;
+    global.CustomEvent = window.CustomEvent;
+    global.Event = window.Event;
+
+    try {
+      const result = await importMDXContent(mdxContent);
+      assert(result.success, result.errors?.join(', '));
+      applyFrontmatterToState(result.frontmatter);
+
+      assert.deepStrictEqual(state.pagination, {
+        pageNumber: 4,
+        totalSlides: 24,
+        label: 'Deck'
+      });
+      assert.deepStrictEqual(state.previewFlags, {
+        previewChrome: false,
+        showDiagnostics: false,
+        showRegionOutlines: false,
+      });
+
+      assert.strictEqual(document.getElementById('pageNumberInput').value, '4');
+      assert.strictEqual(document.getElementById('totalSlidesInput').value, '24');
+      assert.strictEqual(document.getElementById('pageLabelInput').value, 'Deck');
+      assert.strictEqual(document.getElementById('previewChromeToggle').checked, false);
+      assert.strictEqual(document.getElementById('diagnosticsToggle').checked, false);
+      assert.strictEqual(document.getElementById('regionOutlineToggle').checked, false);
+    } finally {
+      delete global.window;
+      delete global.document;
+      delete global.CustomEvent;
+      delete global.Event;
+    }
   });
 });

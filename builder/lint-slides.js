@@ -18,15 +18,19 @@ let resolvedConfigPath = null;
 
 const args = process.argv.slice(2);
 const configArgPath = extractConfigArgPath(args);
+const fileFilterArgs = extractFileFilters(args);
 
 const MAX_TABLE_COLUMNS = 4;
 const MAX_TABLE_ROWS = 8;
+const DEFAULT_MAX_WORDS = 400;
 
 async function main() {
   const errors = [];
+  const fileFilters = collectNormalizedFileFilters(fileFilterArgs, errors);
 
-  const config = await loadConfig(errors);
-  if (!config) {
+  const configRequired = Boolean(configArgPath) || fileFilters.length === 0;
+  const config = await loadConfig(errors, { optional: !configRequired });
+  if (!config && configRequired) {
     report(errors);
     process.exitCode = 1;
     return;
@@ -34,7 +38,23 @@ async function main() {
 
   await fs.ensureDir(SLIDES_DIR);
 
-  for (const slide of config.slides || []) {
+  const slidesToLint = await resolveSlidesToLint(config?.slides ?? [], fileFilters, errors);
+
+  if (!slidesToLint.length) {
+    if (!errors.length) {
+      errors.push('No slides available to lint. Provide a slide config or use --file to target specific files.');
+    }
+    report(errors);
+    process.exitCode = 1;
+    return;
+  }
+
+  if (fileFilters.length) {
+    const descriptor = slidesToLint.length === 1 ? 'slide' : 'slides';
+    console.log(`🔍 Linting ${slidesToLint.length} ${descriptor} via --file filter.`);
+  }
+
+  for (const slide of slidesToLint) {
     const absolutePath = path.join(SLIDES_DIR, slide.file);
     if (!(await fs.pathExists(absolutePath))) {
       errors.push(`Missing slide file: ${slide.file}`);
@@ -49,7 +69,7 @@ async function main() {
     }
 
     const wordCount = content.split(/\s+/).filter(Boolean).length;
-    const maxWords = slide.maxWords ?? 400;
+    const maxWords = slide.maxWords ?? DEFAULT_MAX_WORDS;
     if (wordCount > maxWords) {
       errors.push(`${slide.file}: ${wordCount} words (limit ${maxWords})`);
     }
@@ -295,7 +315,7 @@ function reportIfOversized({ file, tableType, index, rows, columns, errors }) {
   }
 }
 
-async function loadConfig(errors) {
+async function loadConfig(errors, { optional = false } = {}) {
   try {
     const configPath = await resolveConfigPath();
     const raw = await fs.readFile(configPath, 'utf8');
@@ -319,6 +339,9 @@ async function loadConfig(errors) {
 
     return parsed;
   } catch (error) {
+    if (optional && /Missing slide config/i.test(error.message)) {
+      return null;
+    }
     errors.push(`Unable to parse slide config: ${error.message}`);
     return null;
   }
@@ -372,6 +395,140 @@ function extractConfigArgPath(argv) {
   }
 
   return null;
+}
+
+function extractFileFilters(argv) {
+  const values = [];
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg.startsWith('--file=')) {
+      values.push(arg.slice('--file='.length));
+      continue;
+    }
+    if (arg === '--file') {
+      if (argv[index + 1]) {
+        values.push(argv[index + 1]);
+        index += 1;
+      }
+      continue;
+    }
+    if (arg.startsWith('-f=')) {
+      values.push(arg.slice('-f='.length));
+      continue;
+    }
+    if (arg === '-f') {
+      if (argv[index + 1]) {
+        values.push(argv[index + 1]);
+        index += 1;
+      }
+    }
+  }
+
+  const flatValues = [];
+  for (const value of values) {
+    if (!value) continue;
+    const splits = value.split(',').map((segment) => segment.trim()).filter(Boolean);
+    flatValues.push(...splits);
+  }
+
+  return flatValues.map((raw) => ({ raw, normalized: normalizeSlideSpecifier(raw) }));
+}
+
+function collectNormalizedFileFilters(fileEntries, errors) {
+  if (!fileEntries.length) {
+    return [];
+  }
+
+  const normalized = [];
+  const seen = new Set();
+
+  for (const entry of fileEntries) {
+    const { raw, normalized: normalizedPath } = entry;
+    if (!normalizedPath) {
+      errors.push(`--file value must resolve within templates/: ${raw}`);
+      continue;
+    }
+    if (seen.has(normalizedPath)) {
+      continue;
+    }
+    seen.add(normalizedPath);
+    normalized.push(normalizedPath);
+  }
+
+  return normalized;
+}
+
+async function resolveSlidesToLint(configSlides, fileFilters, errors) {
+  if (!fileFilters.length) {
+    return configSlides;
+  }
+
+  const slidesByPath = new Map();
+  for (const slide of configSlides) {
+    const normalized = normalizeSlideSpecifier(slide.file);
+    if (!normalized || slidesByPath.has(normalized)) {
+      continue;
+    }
+    slidesByPath.set(normalized, slide);
+  }
+
+  const selected = [];
+  const directFileTargets = [];
+
+  for (const filter of fileFilters) {
+    if (slidesByPath.has(filter)) {
+      selected.push(slidesByPath.get(filter));
+      continue;
+    }
+
+    const absolutePath = path.join(SLIDES_DIR, filter);
+    if (!(await fs.pathExists(absolutePath))) {
+      errors.push(`--file "${filter}" does not exist under templates/`);
+      continue;
+    }
+
+    directFileTargets.push(filter);
+    selected.push({
+      file: filter,
+      maxWords: DEFAULT_MAX_WORDS,
+    });
+  }
+
+  if (directFileTargets.length) {
+    console.warn(
+      `⚠️  ${directFileTargets.length} --file entr${directFileTargets.length === 1 ? 'y is' : 'ies are'} not in any slide config; linting directly from file.`,
+    );
+  }
+
+  return selected;
+}
+
+function normalizeSlideSpecifier(value) {
+  if (!value) {
+    return null;
+  }
+
+  let raw = value.trim();
+  if (!raw) {
+    return null;
+  }
+
+  raw = raw.replace(/\\/g, '/');
+  raw = raw.replace(/^\.\/+/, '');
+
+  if (path.isAbsolute(raw)) {
+    const relative = path.relative(SLIDES_DIR, raw).replace(/\\/g, '/');
+    return relative.startsWith('..') ? null : relative;
+  }
+
+  if (raw.startsWith('templates/')) {
+    raw = raw.slice('templates/'.length);
+  }
+
+  const absolute = path.resolve(SLIDES_DIR, raw);
+  const relative = path.relative(SLIDES_DIR, absolute).replace(/\\/g, '/');
+
+  return relative.startsWith('..') ? null : relative;
 }
 
 function report(errors) {

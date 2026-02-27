@@ -51,82 +51,130 @@ export function updateSelectionControls(controls) {
         : 'Select a region before applying semantic metadata presets.';
     }
   }
+}
 
-  function initializeRendererControls() {
-    syncPaginationControls(controls);
-    syncPreviewFlagControls(controls);
+function ensurePaginationState() {
+  if (!state.pagination) {
+    state.pagination = {
+      pageNumber: 1,
+      totalSlides: 1,
+      label: 'Page'
+    };
+  }
+}
 
-    const paginationInputs = controls.paginationInputs || {};
-    const previewToggles = controls.previewToggles || {};
+function ensurePreviewFlagState() {
+  if (!state.previewFlags) {
+    state.previewFlags = {
+      previewChrome: true,
+      showDiagnostics: true,
+      showRegionOutlines: true
+    };
+  }
+}
 
-    if (paginationInputs.pageNumber) {
-      paginationInputs.pageNumber.addEventListener('input', (event) => {
-        ensurePaginationState();
-        const nextPage = coerceInt(event.target.value, {
-          fallback: state.pagination.pageNumber || 1,
-          min: 1,
-          max: 999
-        });
-        state.pagination.pageNumber = nextPage;
-        if (!Number.isFinite(state.pagination.totalSlides) || state.pagination.totalSlides < nextPage) {
-          state.pagination.totalSlides = nextPage;
-        }
-        syncPaginationControls(controls);
-        renderPreview();
+function syncPaginationControls(controls) {
+  if (!controls?.paginationInputs) return;
+  ensurePaginationState();
+  const { pageNumber, totalSlides, label } = controls.paginationInputs;
+  if (pageNumber) pageNumber.value = state.pagination.pageNumber ?? 1;
+  if (totalSlides) totalSlides.value = state.pagination.totalSlides ?? state.pagination.pageNumber ?? 1;
+  if (label) label.value = state.pagination.label || 'Page';
+}
+
+function syncPreviewFlagControls(controls) {
+  if (!controls?.previewToggles) return;
+  ensurePreviewFlagState();
+  const { previewChrome, regionOutlines, diagnostics } = controls.previewToggles;
+  if (previewChrome) previewChrome.checked = !!state.previewFlags.previewChrome;
+  if (regionOutlines) regionOutlines.checked = !!state.previewFlags.showRegionOutlines;
+  if (diagnostics) diagnostics.checked = !!state.previewFlags.showDiagnostics;
+}
+
+function coerceInt(value, { fallback = 0, min = -Infinity, max = Infinity } = {}) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+  const clamped = Math.max(min, Math.min(max, Math.floor(parsed)));
+  return clamped;
+}
+
+function initializeRendererControls(controls, renderPreview) {
+  if (!controls) return;
+  syncPaginationControls(controls);
+  syncPreviewFlagControls(controls);
+
+  const paginationInputs = controls.paginationInputs || {};
+  const previewToggles = controls.previewToggles || {};
+
+  if (paginationInputs.pageNumber) {
+    paginationInputs.pageNumber.addEventListener('input', (event) => {
+      ensurePaginationState();
+      const nextPage = coerceInt(event.target.value, {
+        fallback: state.pagination.pageNumber || 1,
+        min: 1,
+        max: 999
       });
-    }
+      state.pagination.pageNumber = nextPage;
+      if (!Number.isFinite(state.pagination.totalSlides) || state.pagination.totalSlides < nextPage) {
+        state.pagination.totalSlides = nextPage;
+      }
+      syncPaginationControls(controls);
+      renderPreview();
+    });
+  }
 
-    if (paginationInputs.totalSlides) {
-      paginationInputs.totalSlides.addEventListener('input', (event) => {
-        ensurePaginationState();
-        const minTotal = Math.max(1, state.pagination.pageNumber || 1);
-        const nextTotal = coerceInt(event.target.value, {
-          fallback: state.pagination.totalSlides || minTotal,
-          min: minTotal,
-          max: 999
-        });
-        state.pagination.totalSlides = nextTotal;
-        syncPaginationControls(controls);
-        renderPreview();
+  if (paginationInputs.totalSlides) {
+    paginationInputs.totalSlides.addEventListener('input', (event) => {
+      ensurePaginationState();
+      const minTotal = Math.max(1, state.pagination.pageNumber || 1);
+      const nextTotal = coerceInt(event.target.value, {
+        fallback: state.pagination.totalSlides || minTotal,
+        min: minTotal,
+        max: 999
       });
-    }
+      state.pagination.totalSlides = nextTotal;
+      syncPaginationControls(controls);
+      renderPreview();
+    });
+  }
 
-    if (paginationInputs.label) {
-      paginationInputs.label.addEventListener('input', (event) => {
-        ensurePaginationState();
-        const nextLabel = event.target.value?.trim() || 'Page';
-        state.pagination.label = nextLabel;
-        syncPaginationControls(controls);
-        renderPreview();
-      });
-    }
+  if (paginationInputs.label) {
+    paginationInputs.label.addEventListener('input', (event) => {
+      ensurePaginationState();
+      const nextLabel = event.target.value?.trim() || 'Page';
+      state.pagination.label = nextLabel;
+      syncPaginationControls(controls);
+      renderPreview();
+    });
+  }
 
-    if (previewToggles.previewChrome) {
-      previewToggles.previewChrome.addEventListener('change', (event) => {
-        ensurePreviewFlagState();
-        state.previewFlags.previewChrome = !!event.target.checked;
-        syncPreviewFlagControls(controls);
-        renderPreview();
-      });
-    }
+  if (previewToggles.previewChrome) {
+    previewToggles.previewChrome.addEventListener('change', (event) => {
+      ensurePreviewFlagState();
+      state.previewFlags.previewChrome = !!event.target.checked;
+      syncPreviewFlagControls(controls);
+      renderPreview();
+    });
+  }
 
-    if (previewToggles.regionOutlines) {
-      previewToggles.regionOutlines.addEventListener('change', (event) => {
-        ensurePreviewFlagState();
-        state.previewFlags.showRegionOutlines = !!event.target.checked;
-        syncPreviewFlagControls(controls);
-        renderPreview();
-      });
-    }
+  if (previewToggles.regionOutlines) {
+    previewToggles.regionOutlines.addEventListener('change', (event) => {
+      ensurePreviewFlagState();
+      state.previewFlags.showRegionOutlines = !!event.target.checked;
+      syncPreviewFlagControls(controls);
+      renderPreview();
+    });
+  }
 
-    if (previewToggles.diagnostics) {
-      previewToggles.diagnostics.addEventListener('change', (event) => {
-        ensurePreviewFlagState();
-        state.previewFlags.showDiagnostics = !!event.target.checked;
-        syncPreviewFlagControls(controls);
-        renderPreview();
-      });
-    }
+  if (previewToggles.diagnostics) {
+    previewToggles.diagnostics.addEventListener('change', (event) => {
+      ensurePreviewFlagState();
+      state.previewFlags.showDiagnostics = !!event.target.checked;
+      syncPreviewFlagControls(controls);
+      renderPreview();
+    });
   }
 }
 
@@ -300,7 +348,7 @@ export function attachControlHandlers(controls, renderPreview, renderSnippet, re
   }
 
   initializeBrandControls();
-  initializeRendererControls();
+  initializeRendererControls(controls, renderPreview);
 
   // Exclusion controls
   if (controls.exclusions) {
@@ -524,3 +572,11 @@ export function applyPreset(
   renderSnippet();
   updateSelectionControls(controls);
 }
+
+export {
+  initializeRendererControls,
+  syncPaginationControls,
+  syncPreviewFlagControls,
+  ensurePaginationState,
+  ensurePreviewFlagState,
+};

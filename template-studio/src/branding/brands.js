@@ -251,5 +251,18 @@ export function emitBrandStateChanged(brandState = null) {
   const detail = brandState
     ? { brand: { ...brandState } }
     : { brand: null };
-  document.dispatchEvent(new CustomEvent('brandStateChanged', { detail }));
+  const customEventCtor =
+    (typeof window !== 'undefined' && typeof window.CustomEvent === 'function')
+      ? window.CustomEvent
+      : (typeof CustomEvent === 'function' ? CustomEvent : null);
+
+  let event;
+  if (customEventCtor) {
+    event = new customEventCtor('brandStateChanged', { detail });
+  } else {
+    event = new Event('brandStateChanged');
+    event.detail = detail;
+  }
+
+  document.dispatchEvent(event);
 }
