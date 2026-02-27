@@ -3,6 +3,7 @@
 import path from 'node:path';
 import fs from 'fs-extra';
 import matter from 'gray-matter';
+import { evaluateTextOverflow } from '../core/layout/overflow-metrics.js';
 
 const GRID_AREA_REGEX = /<GridArea\s+[^>]*area=\"([^\"]+)\"/g;
 
@@ -54,6 +55,13 @@ async function main() {
     }
 
     detectOverflowTables(content, slide.file, errors);
+    detectRegionOverflow({
+      file: slide.file,
+      layout: data?.layout,
+      regions: data?.regions,
+      content,
+      errors
+    });
     detectPotentialWidows(content, slide.file, errors);
     detectGridOverlap(content, slide.file, data?.layout, errors);
   }
@@ -99,6 +107,65 @@ function detectOverflowTables(content, file, errors) {
   detectMarkdownTables(content, file, errors);
 }
 
+function detectRegionOverflow({ file, layout, regions, content, errors }) {
+  if (!layout || layout.type !== 'grid-designer' || !Array.isArray(regions) || !regions.length) {
+    return;
+  }
+
+  const regionByArea = new Map();
+  for (const region of regions) {
+    if (!region?.area) continue;
+    const grid = region.grid || {};
+    regionByArea.set(region.area, {
+      id: region.id || region.area,
+      role: region.role || region.fieldTypes?.[0],
+      gridWidth: grid.width || grid.w || 1,
+      gridHeight: grid.height || grid.h || 1,
+      maxWords: region.maxWords,
+      areaLabel: region.area
+    });
+  }
+
+  if (!regionByArea.size) {
+    return;
+  }
+
+  const regionContent = extractRegionContentMap(content);
+  for (const [area, region] of regionByArea.entries()) {
+    const sample = regionContent.get(area) || '';
+    const metrics = evaluateTextOverflow({
+      text: sample,
+      gridWidth: region.gridWidth,
+      gridHeight: region.gridHeight,
+      role: region.role,
+      maxWords: region.maxWords
+    });
+    if (metrics.overflowChars > 0) {
+      const percentOver = metrics.capacity > 0
+        ? Math.round((metrics.overflowChars / metrics.capacity) * 100)
+        : 0;
+      errors.push(`${file}: region "${area}" exceeds capacity by ${metrics.overflowChars} chars (~${percentOver}% over). Trim ~${metrics.suggestedTrim} characters or enlarge the box.`);
+    }
+  }
+}
+
+function extractRegionContentMap(content) {
+  const map = new Map();
+  const areaRegex = /<GridArea[^>]*area="([^"]+)"[^>]*>([\s\S]*?)<\/GridArea>/gi;
+  let match;
+  while ((match = areaRegex.exec(content))) {
+    const [, area, inner] = match;
+    if (!area) continue;
+    const text = inner
+      .replace(/<ContentRenderer[^>]*content={"([^"]*)"}[^>]*\/>/gi, (_, value) => value || '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    map.set(area, text);
+  }
+  return map;
+}
+
 function detectPotentialWidows(content, file, errors) {
   // Check for short lines that might end with a single word
   const lines = content.split(/\r?\n/);
@@ -107,31 +174,37 @@ function detectPotentialWidows(content, file, errors) {
   
   for (const line of lines) {
     lineNumber++;
-    
+    const trimmedLine = line.trim();
+
     // Skip empty lines, frontmatter, and code blocks
-    if (!line.trim() || line.startsWith('---') || line.startsWith('```')) {
+    if (!trimmedLine || trimmedLine.startsWith('---') || trimmedLine.startsWith('```')) {
       continue;
     }
-    
+
     // Detect if we're in a markdown table
-    if (line.includes('|')) {
+    if (trimmedLine.includes('|')) {
       inTable = true;
-    } else if (inTable && line.trim() === '') {
+    } else if (inTable && trimmedLine === '') {
       inTable = false;
     }
-    
+
     // Skip table content
     if (inTable) {
       continue;
     }
-    
+
     // Skip headers
-    if (line.startsWith('#')) {
+    if (trimmedLine.startsWith('#')) {
       continue;
     }
-    
+
+    // Skip JSX/HTML component lines which generate false positives
+    if (trimmedLine.startsWith('<')) {
+      continue;
+    }
+
     // Check for lines that end with a short word (potential widow)
-    const words = line.trim().split(/\s+/);
+    const words = trimmedLine.split(/\s+/);
     if (words.length >= 3) {
       const lastWord = words[words.length - 1];
       const secondToLastWord = words[words.length - 2];

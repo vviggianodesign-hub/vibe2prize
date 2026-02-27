@@ -5,6 +5,9 @@ const DEFAULT_BRAND = {
     heading: '"Newsreader", serif',
     body: '"Space Grotesk", "Segoe UI", sans-serif'
   },
+  copy: {
+    footer: '© 2026 Template Studio. All rights reserved.'
+  },
   assets: {
     logo: {
       dark: null,
@@ -76,6 +79,9 @@ const EPAM_BRAND = {
   typography: {
     heading: '"Museo", "Newsreader", serif',
     body: '"Source Sans Pro", "Space Grotesk", "Segoe UI", sans-serif'
+  },
+  copy: {
+    footer: 'EPAM Continuum Proprietary and Confidential'
   },
   assets: {
     logo: {
@@ -227,6 +233,10 @@ export function getBrandSnapshot(brandId, variantId) {
     assets: {
       ...(brand.assets || {}),
       ...(variantConfig?.assets || {})
+    },
+    copy: {
+      ...(brand.copy || {}),
+      ...(variantConfig?.copy || {})
     },
     tokens: {
       palette: variantConfig?.tokens?.palette || null,

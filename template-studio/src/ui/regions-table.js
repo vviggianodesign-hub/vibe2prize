@@ -4,6 +4,11 @@ import { slugify } from './controls.js';
 import { ROLE_OPTIONS, applyRoleMetadataToBox } from './semantic-presets.js';
 
 const ROLE_SET = new Set(ROLE_OPTIONS);
+const DEFAULT_REGION_NAME_PATTERN = /^region-\d+$/i;
+
+function hasCustomRegionName(name) {
+  return Boolean(name && !DEFAULT_REGION_NAME_PATTERN.test(name));
+}
 
 function formatRoleLabel(roleKey) {
   if (!roleKey) return 'None';
@@ -124,9 +129,17 @@ export function renderRegionsTable() {
         if (!selectedValue) {
           box.metadata.fieldTypes = [];
         } else {
-          const applied = applyRoleMetadataToBox(box, selectedValue, { preserveName: true });
+          const preserveName = hasCustomRegionName(box.name);
+          const normalizedName = slugify(selectedValue, selectedValue);
+          const applied = applyRoleMetadataToBox(box, selectedValue, {
+            preserveName,
+            name: normalizedName
+          });
           if (!applied) {
             box.metadata.fieldTypes = [selectedValue];
+            if (!preserveName) {
+              box.name = normalizedName;
+            }
           }
         }
         shouldRefreshTable = true;

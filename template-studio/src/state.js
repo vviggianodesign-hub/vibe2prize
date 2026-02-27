@@ -35,6 +35,19 @@ const DEFAULT_STATE = {
   brand: {
     id: 'epam',
     variant: 'dark'
+  },
+  pagination: {
+    pageNumber: 1,
+    totalSlides: 12,
+    label: 'Page'
+  },
+  previewFlags: {
+    previewChrome: true,
+    showDiagnostics: true,
+    showRegionOutlines: true
+  },
+  diagnostics: {
+    overflow: []
   }
 };
 
@@ -69,7 +82,9 @@ function snapshotState() {
       Object.entries(state.metadata).map(([id, metadata]) => [id, { ...metadata }])
     ),
     selectedBoxId: state.selectedBoxId || null,
-    brand: state.brand ? { ...state.brand } : null
+    brand: state.brand ? { ...state.brand } : null,
+    pagination: state.pagination ? { ...state.pagination } : null,
+    previewFlags: state.previewFlags ? { ...state.previewFlags } : null
   };
 }
 
@@ -108,6 +123,12 @@ export function restoreSnapshot(snapshot) {
     };
     emitBrandStateChanged(state.brand);
   }
+  state.pagination = snapshot.pagination
+    ? { ...snapshot.pagination }
+    : { ...DEFAULT_STATE.pagination };
+  state.previewFlags = snapshot.previewFlags
+    ? { ...snapshot.previewFlags }
+    : { ...DEFAULT_STATE.previewFlags };
 }
 
 export function handleUndo() {

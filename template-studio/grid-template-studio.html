@@ -20,54 +20,64 @@
 
     <main class="app-grid">
       <section class="settings-panel">
-        <h2>Template Settings</h2>
-        
-        <label>
-          Template Name
-          <input id="templateName" type="text" value="cssgrid-template" />
-        </label>
-
-        <div class="dual-input-row">
-          <label>
-            Canvas Width (px)
-            <input id="canvasWidth" type="number" min="320" max="7680" value="1920" />
-          </label>
-          <label>
-            Canvas Height (px)
-            <input id="canvasHeight" type="number" min="240" max="4320" value="1080" />
-          </label>
+        <div class="settings-panel-header">
+          <h2>Template Settings</h2>
+          <div class="settings-panel-actions">
+            <button type="button" class="import-btn" id="importMdxBtn">Import MDX</button>
+            <input type="file" id="mdxFileInput" accept=".mdx" style="display: none;" />
+          </div>
         </div>
 
-        <div class="dual-input-row">
+        <div class="settings-field-grid">
           <label>
-            Grid Rows
-            <input id="rowCount" type="number" min="1" max="60" value="45" />
+            Template Name
+            <input id="templateName" type="text" value="cssgrid-template" />
           </label>
+
+          <div class="dual-input-row">
+            <label>
+              Canvas Width (px)
+              <input id="canvasWidth" type="number" min="320" max="7680" value="1920" />
+            </label>
+            <label>
+              Canvas Height (px)
+              <input id="canvasHeight" type="number" min="240" max="4320" value="1080" />
+            </label>
+          </div>
+
+          <div class="dual-input-row">
+            <label>
+              Grid Rows
+              <input id="rowCount" type="number" min="1" max="60" value="45" />
+            </label>
+            <label>
+              Grid Columns
+              <input id="columnCount" type="number" min="1" max="100" value="80" />
+            </label>
+          </div>
+
+          <div class="dual-input-row">
+            <label>
+              Column Size
+              <input id="columnSize" type="text" value="1fr" />
+            </label>
+            <label>
+              Row Size
+              <input id="rowSize" type="text" value="auto" />
+            </label>
+          </div>
+
           <label>
-            Grid Columns
-            <input id="columnCount" type="number" min="1" max="100" value="80" />
+            Gap
+            <input id="gridGap" type="text" value="1.5rem" />
           </label>
         </div>
-
-        <div class="dual-input-row">
-          <label>
-            Column Size
-            <input id="columnSize" type="text" value="1fr" />
-          </label>
-          <label>
-            Row Size
-            <input id="rowSize" type="text" value="auto" />
-          </label>
-        </div>
-
-        <label>
-          Gap
-          <input id="gridGap" type="text" value="1.5rem" />
-        </label>
 
         <div class="brand-panel">
-          <div class="brand-identity">
-            <img id="brandLogo" class="brand-logo" alt="Brand logo" loading="lazy" />
+          <div class="brand-panel-top">
+            <div class="brand-logo-badge">
+              <img id="brandLogo" class="brand-logo" alt="Brand logo" loading="lazy" />
+            </div>
             <div class="brand-identity-meta">
               <span class="eyebrow">Organization</span>
               <strong id="brandLabel">EPAM Systems</strong>
@@ -75,15 +85,17 @@
             </div>
           </div>
 
-          <label>
-            Brand
-            <select id="brandSelect"></select>
-          </label>
+          <div class="brand-panel-controls">
+            <label>
+              Brand
+              <select id="brandSelect"></select>
+            </label>
 
-          <label>
-            Theme
-            <select id="brandThemeSelect"></select>
-          </label>
+            <label>
+              Theme
+              <select id="brandThemeSelect"></select>
+            </label>
+          </div>
 
           <div class="brand-token-list" id="brandTokens"></div>
 
@@ -93,9 +105,44 @@
           </div>
         </div>
 
-        <div class="import-controls">
-          <button type="button" class="import-btn" id="importMdxBtn">Import MDX</button>
-          <input type="file" id="mdxFileInput" accept=".mdx" style="display: none;" />
+        <div class="preview-behavior-panel">
+          <div class="preview-panel-header">
+            <div>
+              <span class="eyebrow">Renderer Controls</span>
+              <strong>Preview Output</strong>
+            </div>
+            <p>Set page numbering and toggle studio-only chrome.</p>
+          </div>
+
+          <div class="preview-field-grid">
+            <label>
+              Page Number
+              <input id="pageNumberInput" type="number" min="1" value="1" />
+            </label>
+            <label>
+              Total Slides
+              <input id="totalSlidesInput" type="number" min="1" value="12" />
+            </label>
+            <label>
+              Page Label
+              <input id="pageLabelInput" type="text" value="Page" />
+            </label>
+          </div>
+
+          <div class="preview-flag-grid">
+            <label class="toggle-pill">
+              <input id="previewChromeToggle" type="checkbox" checked />
+              <span>Show Studio Chrome</span>
+            </label>
+            <label class="toggle-pill">
+              <input id="regionOutlineToggle" type="checkbox" checked />
+              <span>Show Region Outlines</span>
+            </label>
+            <label class="toggle-pill">
+              <input id="diagnosticsToggle" type="checkbox" checked />
+              <span>Show Diagnostics</span>
+            </label>
+          </div>
         </div>
       </section>
 
@@ -145,9 +192,18 @@
           <button type="button" class="preset-btn" data-preset="clear">Clear All</button>
         </div>
         <p class="preset-helper" id="presetStatus">Select a region, then choose a semantic role to auto-fill metadata.</p>
-        <div class="canvas-container">
-          <div class="guide-layer" id="guideLayer"></div>
-          <div id="previewGrid" class="preview-grid" data-canvas="1920×1080"></div>
+        <div class="preview-toggle" role="group" aria-label="Preview view toggle">
+          <button type="button" class="preview-toggle-btn active" data-preview-view="canvas">Grid Canvas</button>
+          <button type="button" class="preview-toggle-btn" data-preview-view="slide">Rendered Slide</button>
+        </div>
+        <div class="preview-workbench" id="previewWorkbench" data-view="canvas">
+          <div class="canvas-container" id="canvasContainer">
+            <div class="guide-layer" id="guideLayer"></div>
+            <div id="previewGrid" class="preview-grid" data-canvas="1920×1080"></div>
+          </div>
+          <div class="slide-preview-panel" id="slidePreviewPanel">
+            <div id="slidePreview" class="slide-preview-surface"></div>
+          </div>
         </div>
         <div class="grid-info">Click and drag to draw regions. Click regions to edit metadata.</div>
         <div class="grid-actions">
@@ -177,6 +233,19 @@
         <div class="table-actions">
           <button type="button" id="addRegionBtn">Add Region</button>
           <button type="button" id="clearAllBtn">Clear All</button>
+        </div>
+      </section>
+
+      <section class="diagnostics-panel" id="diagnosticsPanel">
+        <div class="panel-header">
+          <div>
+            <h3>Overflow Diagnostics</h3>
+            <p class="panel-subtitle">Real-time feedback on regions that exceed their bounding boxes.</p>
+          </div>
+          <span class="diagnostic-summary" id="diagnosticSummary">0 issues</span>
+        </div>
+        <div class="diagnostics-body" id="diagnosticsBody">
+          <p class="diagnostics-empty">No overflow detected. Keep refining your layout.</p>
         </div>
       </section>
 
@@ -214,6 +283,22 @@
         function initializeDom() {
           const previewGrid = document.getElementById('previewGrid');
           const guideLayer = document.getElementById('guideLayer');
+          const canvasContainer = document.getElementById('canvasContainer');
+          const slidePreview = document.getElementById('slidePreview');
+          const workbench = document.getElementById('previewWorkbench');
+          const previewToggleButtons = Array.from(document.querySelectorAll('.preview-toggle-btn'));
+          const diagnosticsBody = document.getElementById('diagnosticsBody');
+          const diagnosticsSummary = document.getElementById('diagnosticSummary');
+
+          const renderCanvas = () => {
+            TemplateStudio.renderPreview(previewGrid);
+            TemplateStudio.renderGuides(guideLayer, previewGrid);
+          };
+
+          const renderAll = () => {
+            renderCanvas();
+            TemplateStudio.renderSlidePreview(slidePreview);
+          };
           const controls = {
             templateName: document.getElementById('templateName'),
             canvasWidth: document.getElementById('canvasWidth'),
@@ -223,7 +308,10 @@
             columnSize: document.getElementById('columnSize'),
             rowSize: document.getElementById('rowSize'),
             gridGap: document.getElementById('gridGap'),
+            previewStage: document.getElementById('previewWorkbench'),
             previewGrid: document.getElementById('previewGrid'),
+            canvasContainer: document.getElementById('canvasContainer'),
+            slidePreviewSurface: document.getElementById('slidePreview'),
             presetButtons: Array.from(document.querySelectorAll('.preset-btn')),
             presetStatus: document.getElementById('presetStatus'),
             snippetOutput: document.getElementById('snippetOutput'),
@@ -246,6 +334,16 @@
               bottom: document.getElementById('exclusionBottom'),
               left: document.getElementById('exclusionLeft'),
               right: document.getElementById('exclusionRight')
+            },
+            paginationInputs: {
+              pageNumber: document.getElementById('pageNumberInput'),
+              totalSlides: document.getElementById('totalSlidesInput'),
+              label: document.getElementById('pageLabelInput')
+            },
+            previewToggles: {
+              previewChrome: document.getElementById('previewChromeToggle'),
+              regionOutlines: document.getElementById('regionOutlineToggle'),
+              diagnostics: document.getElementById('diagnosticsToggle')
             }
           };
 
@@ -253,16 +351,17 @@
 
           TemplateStudio.attachControlHandlers(
             controls,
-            () => {
-              TemplateStudio.renderPreview(previewGrid);
-              TemplateStudio.renderGuides(guideLayer, previewGrid);
-            },
+            renderAll,
             TemplateStudio.renderSnippet,
             TemplateStudio.renderRegionsTable
           );
 
-          TemplateStudio.renderPreview(previewGrid);
-          TemplateStudio.renderGuides(guideLayer, previewGrid);
+          TemplateStudio.initDiagnosticsPanel({
+            bodyEl: diagnosticsBody,
+            summaryEl: diagnosticsSummary
+          });
+
+          renderAll();
           TemplateStudio.renderRegionsTable();
           TemplateStudio.renderSnippet();
           TemplateStudio.updateSelectionControls(controls);
@@ -284,8 +383,7 @@
             if (box) {
               TemplateStudio.state.selectedBoxId = box.id;
               TemplateStudio.updateSelectionControls(controls);
-              TemplateStudio.renderPreview(previewGrid);
-              TemplateStudio.renderGuides(guideLayer, previewGrid);
+              renderAll();
               TemplateStudio.renderRegionsTable();
               TemplateStudio.renderSnippet();
             } else {
@@ -310,20 +408,29 @@
               e,
               previewGrid,
               () => {
-                TemplateStudio.renderPreview(previewGrid);
-                TemplateStudio.renderGuides(guideLayer, previewGrid);
+                renderCanvas();
               }
             );
+          });
+
+          previewToggleButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const view = btn.dataset.previewView;
+              previewToggleButtons.forEach((button) => button.classList.toggle('active', button === btn));
+              workbench.dataset.view = view;
+              if (view === 'canvas') {
+                renderCanvas();
+              } else {
+                TemplateStudio.renderSlidePreview(slidePreview);
+              }
+            });
           });
 
           document.addEventListener('mouseup', (e) => {
             TemplateStudio.handleMouseUp(
               e,
               previewGrid,
-              () => {
-                TemplateStudio.renderPreview(previewGrid);
-                TemplateStudio.renderGuides(guideLayer, previewGrid);
-              },
+              renderCanvas,
               () => {
                 TemplateStudio.renderRegionsTable();
                 document.dispatchEvent(new CustomEvent('regionsTableChanged'));
@@ -335,6 +442,7 @@
             );
 
             TemplateStudio.updateSelectionControls(controls);
+            TemplateStudio.renderSlidePreview(slidePreview);
           });
 
           document.addEventListener('keydown', (e) => {
@@ -343,10 +451,10 @@
               e.preventDefault();
               TemplateStudio.deleteSelectedRegion();
               TemplateStudio.renderRegionsTable();
-              TemplateStudio.renderPreview(previewGrid);
-              TemplateStudio.renderGuides(guideLayer, previewGrid);
+              renderCanvas();
               TemplateStudio.renderSnippet();
               TemplateStudio.updateSelectionControls(controls);
+              TemplateStudio.renderSlidePreview(slidePreview);
             }
           });
 
@@ -376,42 +484,49 @@
             }
           });
 
+          document.addEventListener('diagnosticRegionFocus', (event) => {
+            const boxId = event?.detail?.boxId;
+            if (!boxId) return;
+            TemplateStudio.state.selectedBoxId = boxId;
+            TemplateStudio.renderRegionsTable();
+            TemplateStudio.updateSelectionControls(controls);
+            renderCanvas();
+            TemplateStudio.renderSlidePreview(slidePreview);
+            TemplateStudio.renderSnippet();
+          });
+
           document.addEventListener('regionsTableChanged', () => {
-            TemplateStudio.renderPreview(previewGrid);
-            TemplateStudio.renderGuides(guideLayer, previewGrid);
+            renderAll();
             TemplateStudio.renderSnippet();
           });
 
           document.addEventListener('regionDeleted', () => {
-            TemplateStudio.renderPreview(previewGrid);
-            TemplateStudio.renderGuides(guideLayer, previewGrid);
+            renderAll();
             TemplateStudio.renderSnippet();
             TemplateStudio.updateSelectionControls(controls);
           });
 
           document.addEventListener('regionAdded', () => {
-            TemplateStudio.renderPreview(previewGrid);
-            TemplateStudio.renderGuides(guideLayer, previewGrid);
+            renderAll();
             TemplateStudio.renderSnippet();
           });
 
           document.addEventListener('allRegionsCleared', () => {
-            TemplateStudio.renderPreview(previewGrid);
-            TemplateStudio.renderGuides(guideLayer, previewGrid);
+            renderAll();
             TemplateStudio.renderSnippet();
             TemplateStudio.updateSelectionControls(controls);
           });
 
           document.addEventListener('mdxImported', () => {
             TemplateStudio.renderRegionsTable();
-            TemplateStudio.renderPreview(previewGrid);
-            TemplateStudio.renderGuides(guideLayer, previewGrid);
+            renderAll();
             TemplateStudio.renderSnippet();
             TemplateStudio.updateSelectionControls(controls);
           });
 
           TemplateStudio.applyCanvasDimensions(controls);
           TemplateStudio.applyReferenceOverlay(controls);
+          TemplateStudio.renderSlidePreview(slidePreview);
         }
 
         const moduleScript = document.createElement('script');

@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 import { Fragment, jsx, jsxs } from 'react/jsx-runtime';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { RendererProvider } from '../core/layout/render-context.js';
 
 const ROOT = path.resolve(process.cwd());
 const SLIDES_DIR = path.join(ROOT, 'templates');
@@ -31,6 +32,7 @@ async function build() {
     await fs.ensureDir(SLIDES_DIR);
     const config = await loadConfig();
     const sections = [];
+    const totalSlides = Array.isArray(config.slides) ? config.slides.length : 0;
 
     for (const [index, slide] of (config.slides || []).entries()) {
       const absolutePath = path.join(SLIDES_DIR, slide.file);
@@ -56,7 +58,20 @@ async function build() {
       }
       const Component = module.default;
 
-      const element = React.createElement(Component, data);
+      const element = React.createElement(
+        RendererProvider,
+        {
+          value: {
+            pageNumber: index + 1,
+            totalSlides,
+            label: 'Page',
+            previewChrome: false,
+            showDiagnostics: false,
+            showRegionOutlines: false,
+          }
+        },
+        React.createElement(Component, data)
+      );
       const html = renderToStaticMarkup(element);
       const resolvedTitle = data.title || slide.title || '';
       const sectionLabel = data.sectionTitle || data.section || data.phase || resolvedTitle;

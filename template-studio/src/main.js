@@ -1,6 +1,7 @@
 import { state, pushHistory, captureHistoryForInteraction, resetInteractionHistory, handleUndo, handleRedo } from './state.js';
 import { downloadMdxFile } from './persistence/mdx.js';
 import { renderPreview } from './canvas/renderer.js';
+import { renderSlidePreview } from './canvas/rendered-view.js';
 import { renderGuides } from './canvas/guides.js';
 import { 
   isEditableTarget, 
@@ -30,6 +31,7 @@ import { renderRegionsTable, addNewRegion, clearAllRegions } from './ui/regions-
 import { importMDXFile, parseMDXFrontmatter } from './persistence/importer.js';
 import { renderSnippet } from './utils/snippet.js';
 import { applyBrandTheme, listBrandOptions, listBrandThemeOptions, getBrandSnapshot } from './branding/brands.js';
+import { initDiagnosticsPanel } from './ui/diagnostics-panel.js';
 
 // Re-export for HTML script usage
 export { 
@@ -41,6 +43,7 @@ export {
   handleRedo, 
   downloadMdxFile,
   renderPreview,
+  renderSlidePreview,
   renderGuides,
   isEditableTarget,
   hasOverlap,
@@ -67,6 +70,7 @@ export {
   importMDXFile,
   parseMDXFrontmatter,
   renderSnippet,
+  initDiagnosticsPanel,
   DRAW_DRAG_THRESHOLD,
   applyBrandTheme,
   listBrandOptions,
@@ -84,9 +88,11 @@ export function init() {
   window.TemplateStudio = {
     state,
     renderPreview,
+    renderSlidePreview,
     renderGuides,
     renderRegionsTable,
     renderSnippet,
+    initDiagnosticsPanel,
     applyCanvasDimensions,
     applyReferenceOverlay,
     updateSelectionControls,

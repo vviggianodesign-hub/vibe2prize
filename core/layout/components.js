@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { getTemplateCSS, isValidTemplate } from './grid-templates.js';
+import { RendererContext } from './render-context.js';
+import { formatPageNumberLabel } from './renderer-utils.js';
 
 const GRID_AREA_SIGNATURE = '__gridAreaComponent__';
 
@@ -22,6 +24,19 @@ export const PanelGrid = ({ columns = 2, gap = '2rem', className = '', children 
     children,
   );
 };
+
+function resolvePageNumberValue({ content, rendererContext }) {
+  const hasExplicitContent = content !== undefined && content !== null && `${content}`.trim() !== '';
+  if (hasExplicitContent) {
+    return content;
+  }
+  const pagination = rendererContext || {};
+  return formatPageNumberLabel({
+    pageNumber: pagination.pageNumber,
+    totalSlides: pagination.totalSlides,
+    label: pagination.label
+  });
+}
 
 export const TitleSlide = ({ title, subtitle, preparedFor, meta = [] }) =>
   React.createElement(
@@ -432,6 +447,8 @@ export const ContentRenderer = ({
   className = '',
   ...props 
 }) => {
+  const rendererContext = useContext(RendererContext);
+
   switch (type) {
     case 'primary-title':
     case 'secondary-title':
@@ -524,6 +541,18 @@ export const ContentRenderer = ({
           content.map((item, index) => React.createElement('li', { key: index }, item)) :
           content
       );
+
+    case 'page-number': {
+      const resolvedPageNumber = resolvePageNumberValue({ content, rendererContext });
+      return React.createElement(
+        'p',
+        {
+          className: `grid-page-number ${className}`.trim(),
+          ...props
+        },
+        resolvedPageNumber
+      );
+    }
     
     default:
       return React.createElement(

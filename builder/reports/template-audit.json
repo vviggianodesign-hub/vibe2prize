@@ -1,0 +1,1370 @@
+[
+  {
+    "file": "templates/mdx/custom-hero-example.mdx",
+    "title": "Custom Hero Layout Example",
+    "layoutTemplate": "hero-layout",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"hero-title\" has no matching layout component",
+      "region id \"hero-content\" has no matching layout component",
+      "region id \"hero-footer\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-card-grid-services.mdx",
+    "title": "Service Portfolio: Comprehensive Solutions",
+    "layoutTemplate": "card-grid",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 6,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"service-1\" has no matching layout component",
+      "region id \"service-2\" has no matching layout component",
+      "region id \"service-3\" has no matching layout component",
+      "region id \"service-4\" has no matching layout component",
+      "region id \"service-5\" has no matching layout component",
+      "region id \"service-6\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-case-study.mdx",
+    "title": "Case Study: Healthcare Digital Transformation",
+    "layoutTemplate": "matrix-2x2",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"client-title\" has no matching layout component",
+      "region id \"challenge\" has no matching layout component",
+      "region id \"solution\" has no matching layout component",
+      "region id \"results\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-circular-process.mdx",
+    "title": "Continuous Improvement: Circular Process Framework",
+    "layoutTemplate": "circular-process",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 9,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"process-title\" has no matching layout component",
+      "region id \"step-1\" has no matching layout component",
+      "region id \"step-2\" has no matching layout component",
+      "region id \"step-3\" has no matching layout component",
+      "region id \"step-4\" has no matching layout component",
+      "region id \"step-5\" has no matching layout component",
+      "region id \"step-6\" has no matching layout component",
+      "region id \"step-7\" has no matching layout component",
+      "region id \"context-info\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-client-testimonial.mdx",
+    "title": "Client Success: Financial Services Transformation",
+    "layoutTemplate": "dual-panel",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"client-title\" has no matching layout component",
+      "region id \"testimonial-story\" has no matching layout component",
+      "region id \"client-results\" has no matching layout component",
+      "region id \"client-quote\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-comparison-before-after.mdx",
+    "title": "Digital Transformation: Before vs After",
+    "layoutTemplate": "comparison-layout",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"before-state\" has no matching layout component",
+      "region id \"comparison-indicator\" has no matching layout component",
+      "region id \"after-state\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-dashboard-overview.mdx",
+    "title": "Executive Dashboard: Performance Overview",
+    "layoutTemplate": "dashboard",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"dashboard-header\" has no matching layout component",
+      "region id \"kpi-sidebar\" has no matching layout component",
+      "region id \"main-content\" has no matching layout component",
+      "region id \"dashboard-footer\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-data-viz-performance.mdx",
+    "title": "Performance Analytics: Data-Driven Insights",
+    "layoutTemplate": "data-viz",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "primary-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"chart-visualization\" has no matching layout component",
+      "region id \"chart-legend\" has no matching layout component",
+      "region id \"chart-annotations\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-executive-summary.mdx",
+    "title": "Executive Summary: Digital Transformation Strategy",
+    "layoutTemplate": "presentation-grid",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"title\" has no matching layout component",
+      "region id \"narrative\" has no matching layout component",
+      "region id \"key-points\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-faq-digital-transformation.mdx",
+    "title": "Digital Transformation FAQ",
+    "layoutTemplate": "faq-layout",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"faq-header\" has no matching layout component",
+      "region id \"faq-questions\" has no matching layout component",
+      "region id \"faq-details\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-feature-showcase-ai.mdx",
+    "title": "AI Platform: Intelligent Automation",
+    "layoutTemplate": "feature-showcase",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"ai-hero\" has no matching layout component",
+      "region id \"ai-features\" has no matching layout component",
+      "region id \"ai-details\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-flexible-circle-3-items.mdx",
+    "title": "Strategic Pillars: 3 Core Focus Areas",
+    "layoutTemplate": "flexible-circle",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"strategy-title\" has no matching layout component",
+      "region id \"pillar-1\" has no matching layout component",
+      "region id \"pillar-2\" has no matching layout component",
+      "region id \"pillar-3\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-flexible-circle-5-items.mdx",
+    "title": "Digital Transformation: 5 Key Stages",
+    "layoutTemplate": "flexible-circle",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 6,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"transformation-title\" has no matching layout component",
+      "region id \"stage-1\" has no matching layout component",
+      "region id \"stage-2\" has no matching layout component",
+      "region id \"stage-3\" has no matching layout component",
+      "region id \"stage-4\" has no matching layout component",
+      "region id \"stage-5\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-flexible-circle-8-items.mdx",
+    "title": "Enterprise Excellence: 8 Critical Dimensions",
+    "layoutTemplate": "flexible-circle",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 9,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"excellence-title\" has no matching layout component",
+      "region id \"dimension-1\" has no matching layout component",
+      "region id \"dimension-2\" has no matching layout component",
+      "region id \"dimension-3\" has no matching layout component",
+      "region id \"dimension-4\" has no matching layout component",
+      "region id \"dimension-5\" has no matching layout component",
+      "region id \"dimension-6\" has no matching layout component",
+      "region id \"dimension-7\" has no matching layout component",
+      "region id \"dimension-8\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-innovation-cycle.mdx",
+    "title": "Innovation Lifecycle: From Idea to Impact",
+    "layoutTemplate": "circular-process",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 9,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"innovation-title\" has no matching layout component",
+      "region id \"discovery\" has no matching layout component",
+      "region id \"ideation\" has no matching layout component",
+      "region id \"validation\" has no matching layout component",
+      "region id \"development\" has no matching layout component",
+      "region id \"testing\" has no matching layout component",
+      "region id \"deployment\" has no matching layout component",
+      "region id \"iteration\" has no matching layout component",
+      "region id \"context\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-innovation-showcase.mdx",
+    "title": "Innovation Showcase: Emerging Technologies",
+    "layoutTemplate": "matrix-3x3",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 9,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"showcase-title\" has no matching layout component",
+      "region id \"ai-innovation\" has no matching layout component",
+      "region id \"quantum-computing\" has no matching layout component",
+      "region id \"blockchain-solutions\" has no matching layout component",
+      "region id \"iot-ecosystems\" has no matching layout component",
+      "region id \"edge-computing\" has no matching layout component",
+      "region id \"ar-experiences\" has no matching layout component",
+      "region id \"sustainable-tech\" has no matching layout component",
+      "region id \"biometric-security\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-innovation-timeline.mdx",
+    "title": "Innovation Timeline: Technology Evolution",
+    "layoutTemplate": "flexible-timeline",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 13,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"innovation-title\" has no matching layout component",
+      "region id \"era-1\" has no matching layout component",
+      "region id \"era-2\" has no matching layout component",
+      "region id \"era-3\" has no matching layout component",
+      "region id \"era-4\" has no matching layout component",
+      "region id \"era-5\" has no matching layout component",
+      "region id \"era-6\" has no matching layout component",
+      "region id \"date-1\" has no matching layout component",
+      "region id \"date-2\" has no matching layout component",
+      "region id \"date-3\" has no matching layout component",
+      "region id \"date-4\" has no matching layout component",
+      "region id \"date-5\" has no matching layout component",
+      "region id \"date-6\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-magazine-feature.mdx",
+    "title": "Innovation Spotlight: AI-Powered Engineering",
+    "layoutTemplate": "dual-panel",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"headline\" has no matching layout component",
+      "region id \"feature-story\" has no matching layout component",
+      "region id \"sidebar-stats\" has no matching layout component",
+      "region id \"sidebar-highlights\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-metrics-dashboard.mdx",
+    "title": "Performance Metrics: Q4 2023 Dashboard",
+    "layoutTemplate": "scorecard-layout",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"dashboard-title\" has no matching layout component",
+      "region id \"metrics-narrative\" has no matching layout component",
+      "region id \"key-metrics\" has no matching layout component",
+      "region id \"performance-highlights\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-milestone-timeline.mdx",
+    "title": "Company Milestones: EPAM Growth Journey",
+    "layoutTemplate": "flexible-timeline",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 17,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"milestone-title\" has no matching layout component",
+      "region id \"milestone-1\" has no matching layout component",
+      "region id \"milestone-2\" has no matching layout component",
+      "region id \"milestone-3\" has no matching layout component",
+      "region id \"milestone-4\" has no matching layout component",
+      "region id \"milestone-5\" has no matching layout component",
+      "region id \"milestone-6\" has no matching layout component",
+      "region id \"milestone-7\" has no matching layout component",
+      "region id \"milestone-8\" has no matching layout component",
+      "region id \"year-1\" has no matching layout component",
+      "region id \"year-2\" has no matching layout component",
+      "region id \"year-3\" has no matching layout component",
+      "region id \"year-4\" has no matching layout component",
+      "region id \"year-5\" has no matching layout component",
+      "region id \"year-6\" has no matching layout component",
+      "region id \"year-7\" has no matching layout component",
+      "region id \"year-8\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-pricing-services.mdx",
+    "title": "Service Pricing: Flexible Solutions",
+    "layoutTemplate": "pricing-table",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "primary-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"pricing-header\" has no matching layout component",
+      "region id \"basic-plan\" has no matching layout component",
+      "region id \"pro-plan\" has no matching layout component",
+      "region id \"enterprise-plan\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-process-flow-agile.mdx",
+    "title": "Agile Development Process: 5-Step Workflow",
+    "layoutTemplate": "process-flow",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 5,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "primary-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"step-1\" has no matching layout component",
+      "region id \"step-2\" has no matching layout component",
+      "region id \"step-3\" has no matching layout component",
+      "region id \"step-4\" has no matching layout component",
+      "region id \"step-5\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-process-workflow.mdx",
+    "title": "Process Innovation: Agile Delivery Framework",
+    "layoutTemplate": "triple-panel",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"process-title\" has no matching layout component",
+      "region id \"process-narrative\" has no matching layout component",
+      "region id \"workflow-steps\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-project-timeline.mdx",
+    "title": "Project Timeline: Digital Transformation Journey",
+    "layoutTemplate": "flexible-timeline",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 9,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"timeline-title\" has no matching layout component",
+      "region id \"phase-1\" has no matching layout component",
+      "region id \"phase-2\" has no matching layout component",
+      "region id \"phase-3\" has no matching layout component",
+      "region id \"phase-4\" has no matching layout component",
+      "region id \"date-1\" has no matching layout component",
+      "region id \"date-2\" has no matching layout component",
+      "region id \"date-3\" has no matching layout component",
+      "region id \"date-4\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-quote-leadership.mdx",
+    "title": "Leadership Vision: Future-Forward Innovation",
+    "layoutTemplate": "quote-layout",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "primary-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"vision-quote\" has no matching layout component",
+      "region id \"speaker-attribution\" has no matching layout component",
+      "region id \"quote-context\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-research-findings.mdx",
+    "title": "Research Insights: Future of Work Study",
+    "layoutTemplate": "presentation-grid",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"research-title\" has no matching layout component",
+      "region id \"research-narrative\" has no matching layout component",
+      "region id \"key-findings\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-slide-title-executive.mdx",
+    "title": "Executive Summit 2024: Innovation & Growth",
+    "layoutTemplate": "slide-title",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"summit-title\" has no matching layout component",
+      "region id \"summit-subtitle\" has no matching layout component",
+      "region id \"presenter-details\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-slide-title-main.mdx",
+    "title": "Digital Transformation: The Future of Business",
+    "layoutTemplate": "slide-title",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"main-title\" has no matching layout component",
+      "region id \"subtitle\" has no matching layout component",
+      "region id \"presenter-info\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-slide-title-workshop.mdx",
+    "title": "AI Workshop: Practical Implementation Strategies",
+    "layoutTemplate": "slide-title",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"workshop-title\" has no matching layout component",
+      "region id \"workshop-subtitle\" has no matching layout component",
+      "region id \"workshop-presenter\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-split-screen-solutions.mdx",
+    "title": "Technology Solutions: Cloud vs On-Premise",
+    "layoutTemplate": "split-screen",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"cloud-solution\" has no matching layout component",
+      "region id \"cloud-details\" has no matching layout component",
+      "region id \"onpremise-solution\" has no matching layout component",
+      "region id \"onpremise-details\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-strategic-roadmap.mdx",
+    "title": "Strategic Roadmap: 2024-2026 Vision",
+    "layoutTemplate": "presentation-grid",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"roadmap-title\" has no matching layout component",
+      "region id \"strategic-narrative\" has no matching layout component",
+      "region id \"roadmap-phases\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-tabbed-content-platforms.mdx",
+    "title": "Platform Solutions: Multi-Service Integration",
+    "layoutTemplate": "tabbed-content",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "primary-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"tab-navigation\" has no matching layout component",
+      "region id \"panel-1-content\" has no matching layout component",
+      "region id \"panel-2-content\" has no matching layout component",
+      "region id \"panel-3-content\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-team-leadership.mdx",
+    "title": "Leadership Team: Expertise & Vision",
+    "layoutTemplate": "team-layout",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 4,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"member-1\" has no matching layout component",
+      "region id \"member-2\" has no matching layout component",
+      "region id \"member-3\" has no matching layout component",
+      "region id \"member-4\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  },
+  {
+    "file": "templates/mdx/epam-technical-insights.mdx",
+    "title": "Technical Insights: Cloud Architecture Evolution",
+    "layoutTemplate": "template-sidebar",
+    "componentShape": "string-array",
+    "componentCount": 3,
+    "regionCount": 3,
+    "hasTemplateSettings": false,
+    "hasBrand": false,
+    "hasExclusions": false,
+    "baselineDiff": {
+      "templateSettings": "missing",
+      "layoutGap": {
+        "baseline": "0.5rem",
+        "template": null
+      },
+      "missingBaselineRoles": [
+        "section-title",
+        "secondary-title",
+        "logo",
+        "page-number",
+        "footer"
+      ]
+    },
+    "issues": [
+      "phase must be one of: concept, design, development, production, draft",
+      "layout.components[0] must be an object",
+      "layout.components[1] must be an object",
+      "layout.components[2] must be an object",
+      "region id \"technical-title\" has no matching layout component",
+      "region id \"technical-narrative\" has no matching layout component",
+      "region id \"architecture-highlights\" has no matching layout component",
+      "templateSettings block missing",
+      "exclusions block missing",
+      "brand block missing",
+      "layout.components contains non-object entries"
+    ]
+  }
+]
