@@ -1,5 +1,5 @@
 ---
-title: "Leadership Vision: Future Forward Innovation"
+title: "Grid Blueprint: Narrative Slide"
 maxWords: 280
 phase: "draft"
 templateSettings:
@@ -12,55 +12,57 @@ templateSettings:
   gap: "0.5rem"
 layout:
   type: "grid-designer"
-  template: "Leadership Vision: Future-Forward Innovation"
+  template: "Grid Blueprint: Narrative Slide"
   components:
     - type: "GridArea"
-      id: "vision-quote"
-      role: "supporting-text"
-      area: "quote"
-      maxWords: 120
+      id: "section-label"
+      role: "section-title"
+      area: "section-label"
     - type: "GridArea"
-      id: "speaker-attribution"
-      role: "key-data"
-      area: "attribution"
-      maxWords: 20
+      id: "hero-title"
+      role: "primary-title"
+      area: "hero-title"
+      maxWords: 18
     - type: "GridArea"
-      id: "quote-context"
-      role: "context-info"
-      area: "context"
-      maxWords: 60
-    - type: "GridArea"
-      id: "quote-callout"
+      id: "hero-subtitle"
       role: "secondary-title"
-      area: "callout"
-      maxWords: 35
+      area: "hero-subtitle"
+      maxWords: 28
     - type: "GridArea"
-      id: "quote-table"
-      role: "data-table"
-      area: "table"
+      id: "summary-body"
+      role: "supporting-text"
+      area: "summary"
+      maxWords: 160
+    - type: "GridArea"
+      id: "insight-callout"
+      role: "key-data"
+      area: "insight"
       maxWords: 40
     - type: "GridArea"
-      id: "box-1772058884696-pi8duifqp"
-      role: "section-title"
-      area: "section-title"
+      id: "stat-cluster"
+      role: "data-table"
+      area: "stat-cluster"
+      maxWords: 40
     - type: "GridArea"
-      id: "box-1772071011383-yo94o8r0s"
-      role: "primary-title"
-      area: "primary-title"
+      id: "stat-caption"
+      role: "context-info"
+      area: "stat-caption"
+      maxWords: 60
     - type: "GridArea"
-      id: "box-1772071044516-yyezx4cfz"
-      role: "secondary-title"
-      area: "secondary-title"
+      id: "quote"
+      role: "supporting-text"
+      area: "quote"
+      maxWords: 70
     - type: "GridArea"
-      id: "box-1772071056583-97wzq0wkd"
+      id: "brand-logo"
       role: "logo"
       area: "logo"
     - type: "GridArea"
-      id: "box-1772071064983-v9d1n2zdx"
+      id: "page-number"
       role: "page-number"
       area: "page-number"
     - type: "GridArea"
-      id: "box-1772071078466-swm6wtm18"
+      id: "footer"
       role: "footer"
       area: "footer"
   rows: 45
@@ -69,74 +71,88 @@ layout:
 exclusions:
   top: 5
   bottom: 4
-  left: 3
-  right: 3
+  left: 1
+  right: 1
 brand:
   id: "epam"
   variant: "dark"
 regions:
-  - id: "vision-quote"
-    area: "quote"
-    role: "supporting-text"
-    required: true
-    inputType: "text"
-    type: "supporting-text"
-    fieldTypes:
-      - "supporting-text"
-    maxWords: 120
-    llmHint: "Primary leadership quote"
-    grid:
-      x: 3
-      y: 6
-      width: 49
-      height: 16
-  - id: "speaker-attribution"
-    area: "attribution"
-    role: "key-data"
-    required: true
-    inputType: "text"
-    type: "key-data"
-    fieldTypes:
-      - "key-data"
-    maxWords: 20
-    llmHint: "Speaker name + title"
-    grid:
-      x: 3
-      y: 22
-      width: 25
-      height: 6
-  - id: "quote-context"
-    area: "context"
-    role: "context-info"
+  - id: "section-label"
+    area: "section-label"
+    role: "section-title"
     required: false
     inputType: "text"
-    type: "context-info"
+    type: "section-title"
     fieldTypes:
-      - "context-info"
-    maxWords: 60
-    llmHint: "Event or delivery context"
+      - "section-title"
+    llmHint: "Eyebrow or track name anchoring the narrative."
     grid:
-      x: 28
-      y: 22
-      width: 24
-      height: 6
-  - id: "quote-callout"
-    area: "callout"
+      x: 1
+      y: 1
+      width: 26
+      height: 1
+  - id: "hero-title"
+    area: "hero-title"
+    role: "primary-title"
+    required: true
+    inputType: "text"
+    type: "primary-title"
+    fieldTypes:
+      - "primary-title"
+    maxWords: 18
+    llmHint: "Primary narrative headline."
+    grid:
+      x: 1
+      y: 2
+      width: 52
+      height: 2
+  - id: "hero-subtitle"
+    area: "hero-subtitle"
     role: "secondary-title"
     required: false
     inputType: "text"
     type: "secondary-title"
     fieldTypes:
       - "secondary-title"
-    maxWords: 35
-    llmHint: "Impact statement or CTA"
+    maxWords: 28
+    llmHint: "Subtitle that frames the story."
     grid:
-      x: 53
+      x: 1
+      y: 4
+      width: 52
+      height: 1
+  - id: "summary-body"
+    area: "summary"
+    role: "supporting-text"
+    required: true
+    inputType: "text"
+    type: "supporting-text"
+    fieldTypes:
+      - "supporting-text"
+    maxWords: 160
+    llmHint: "Core narrative paragraph or two."
+    grid:
+      x: 1
       y: 6
-      width: 24
-      height: 22
-  - id: "quote-table"
-    area: "table"
+      width: 52
+      height: 18
+  - id: "insight-callout"
+    area: "insight"
+    role: "key-data"
+    required: false
+    inputType: "text"
+    type: "key-data"
+    fieldTypes:
+      - "key-data"
+    maxWords: 40
+    llmHint: "Highlight metric or actionable insight."
+    grid:
+      x: 54
+      y: 6
+      width: 25
+      height: 35
+  - id: "stat-cluster"
+    area: "stat-cluster"
     role: "data-table"
     required: false
     inputType: "table"
@@ -144,69 +160,57 @@ regions:
     fieldTypes:
       - "data-table"
     maxWords: 40
-    llmHint: "Metrics reinforcing the quote"
+    llmHint: "Structured stats or checklist."
     grid:
-      x: 3
-      y: 29
-      width: 74
-      height: 12
-  - id: "box-1772058884696-pi8duifqp"
-    area: "section-title"
-    role: "section-title"
+      x: 1
+      y: 24
+      width: 26
+      height: 8
+  - id: "stat-caption"
+    area: "stat-caption"
+    role: "context-info"
     required: false
     inputType: "text"
-    type: "section-title"
+    type: "context-info"
     fieldTypes:
-      - "section-title"
-    llmHint: "Heading that introduces a new section or content block within the slide Key traits: transitional, organizational, informative."
+      - "context-info"
+    maxWords: 60
+    llmHint: "Explain how the data ties back to the story."
     grid:
-      x: 1
-      y: 1
-      width: 39
-      height: 1
-  - id: "box-1772071011383-yo94o8r0s"
-    area: "primary-title"
-    role: "primary-title"
-    required: true
-    inputType: "text"
-    type: "primary-title"
-    fieldTypes:
-      - "primary-title"
-    llmHint: "Main heading of the slide, most important text element Key traits: short, impactful, top-level."
-    grid:
-      x: 1
-      y: 2
-      width: 52
-      height: 2
-  - id: "box-1772071044516-yyezx4cfz"
-    area: "secondary-title"
-    role: "secondary-title"
+      x: 27
+      y: 24
+      width: 26
+      height: 8
+  - id: "quote"
+    area: "quote"
+    role: "supporting-text"
     required: false
     inputType: "text"
-    type: "secondary-title"
+    type: "supporting-text"
     fieldTypes:
-      - "secondary-title"
-    llmHint: "Secondary heading that provides context or elaboration Key traits: descriptive, supporting, contextual."
+      - "supporting-text"
+    maxWords: 70
+    llmHint: "Short testimonial or voice-of-customer pull."
     grid:
       x: 1
-      y: 4
+      y: 32
       width: 52
-      height: 1
-  - id: "box-1772071056583-97wzq0wkd"
+      height: 9
+  - id: "brand-logo"
     area: "logo"
     role: "logo"
-    required: true
+    required: false
     inputType: "image"
     type: "logo"
     fieldTypes:
       - "logo"
-    llmHint: "Represents a company or product identity element displayed on the slide Key traits: brand, visual, compact."
+    llmHint: "Brand identifier or watermark."
     grid:
-      x: 1
+      x: 3
       y: 42
-      width: 8
+      width: 10
       height: 2
-  - id: "box-1772071064983-v9d1n2zdx"
+  - id: "page-number"
     area: "page-number"
     role: "page-number"
     required: true
@@ -214,13 +218,13 @@ regions:
     type: "page-number"
     fieldTypes:
       - "page-number"
-    llmHint: "Numeric indicator showing the slide position in the deck Key traits: utility, compact, consistent."
+    llmHint: "Slide number indicator."
     grid:
-      x: 71
+      x: 68
       y: 42
-      width: 8
+      width: 9
       height: 2
-  - id: "box-1772071078466-swm6wtm18"
+  - id: "footer"
     area: "footer"
     role: "footer"
     required: true
@@ -228,42 +232,42 @@ regions:
     type: "footer"
     fieldTypes:
       - "footer"
-    llmHint: "Bottom strip of the slide containing navigational or legal info Key traits: persistent, structural, low-contrast."
+    llmHint: "Legal copy or confidentiality notice."
     grid:
-      x: 27
+      x: 22
       y: 43
-      width: 26
+      width: 32
       height: 1
 ---
 
 import { GridDesigner, GridArea, ContentRenderer } from "../../core/layout/components.js";
 
-<GridDesigner template="Leadership Vision: Future-Forward Innovation">
-  <GridArea area="quote" contentType="supporting-text" importance="critical">
-    <ContentRenderer type="supporting-text" content={""} />
-  </GridArea>
-  <GridArea area="attribution" contentType="key-data" importance="critical">
-    <ContentRenderer type="key-data" content={""} />
-  </GridArea>
-  <GridArea area="context" contentType="context-info" importance="supporting">
-    <ContentRenderer type="context-info" content={""} />
-  </GridArea>
-  <GridArea area="callout" contentType="secondary-title" importance="supporting">
-    <ContentRenderer type="secondary-title" content={""} />
-  </GridArea>
-  <GridArea area="table" contentType="data-table" importance="supporting">
-    <ContentRenderer type="data-table" content={""} />
-  </GridArea>
-  <GridArea area="section-title" contentType="section-title" importance="supporting">
+<GridDesigner template="Grid Blueprint: Narrative Slide">
+  <GridArea area="section-label" contentType="section-title" importance="supporting">
     <ContentRenderer type="section-title" content={""} />
   </GridArea>
-  <GridArea area="primary-title" contentType="primary-title" importance="critical">
+  <GridArea area="hero-title" contentType="primary-title" importance="critical">
     <ContentRenderer type="primary-title" content={""} />
   </GridArea>
-  <GridArea area="secondary-title" contentType="secondary-title" importance="supporting">
+  <GridArea area="hero-subtitle" contentType="secondary-title" importance="supporting">
     <ContentRenderer type="secondary-title" content={""} />
   </GridArea>
-  <GridArea area="logo" contentType="logo" importance="critical">
+  <GridArea area="summary" contentType="supporting-text" importance="critical">
+    <ContentRenderer type="supporting-text" content={""} />
+  </GridArea>
+  <GridArea area="insight" contentType="key-data" importance="supporting">
+    <ContentRenderer type="key-data" content={""} />
+  </GridArea>
+  <GridArea area="stat-cluster" contentType="data-table" importance="supporting">
+    <ContentRenderer type="data-table" content={""} />
+  </GridArea>
+  <GridArea area="stat-caption" contentType="context-info" importance="supporting">
+    <ContentRenderer type="context-info" content={""} />
+  </GridArea>
+  <GridArea area="quote" contentType="supporting-text" importance="supporting">
+    <ContentRenderer type="supporting-text" content={""} />
+  </GridArea>
+  <GridArea area="logo" contentType="logo" importance="supporting">
     <ContentRenderer type="logo" content={""} />
   </GridArea>
   <GridArea area="page-number" contentType="page-number" importance="critical">

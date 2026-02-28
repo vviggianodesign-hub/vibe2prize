@@ -3,6 +3,7 @@ import { downloadMdxFile } from '../persistence/mdx.js';
 import { importMDXFile } from '../persistence/importer.js';
 import { applyRoleMetadataToBox, getRoleForPreset } from './semantic-presets.js';
 import { applyBrandTheme, listBrandOptions, listBrandThemeOptions, getBrandSnapshot, emitBrandStateChanged } from '../branding/brands.js';
+import { hydrateMasterTemplate } from '../main.js';
 
 export function slugify(value, fallback) {
   const slug = value
@@ -443,6 +444,12 @@ export function attachControlHandlers(controls, renderPreview, renderSnippet, re
       controls.brandThemeSelect.value = state.brand?.variant || controls.brandThemeSelect.value;
       updateBrandPanel();
     });
+
+    document.addEventListener('masterTemplateHydrated', () => {
+      // Re-render the canvas after master template is loaded
+      renderPreview();
+      renderRegionsTable();
+    });
   }
 
   function populateBrandOptions() {
@@ -477,6 +484,9 @@ export function attachControlHandlers(controls, renderPreview, renderSnippet, re
     };
     emitBrandStateChanged(state.brand);
     updateBrandPanel();
+    
+    // Hydrate the master template for the new brand
+    hydrateMasterTemplate({ brandId, variantId, force: true });
   }
 
   function updateBrandPanel() {
