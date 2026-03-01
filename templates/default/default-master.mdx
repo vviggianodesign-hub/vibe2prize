@@ -77,6 +77,50 @@ exclusions:
 brand:
   id: "default"
   variant: "dark"
+previewFlags:
+  previewChrome: true
+  showDiagnostics: false
+  showRegionOutlines: true
+  detectDomOverflow: true
+  showBackgroundShapes: true
+backgroundShapes:
+  - id: "nebula-band"
+    kind: "blob"
+    blendMode: "screen"
+    opacity: 0.75
+    coords:
+      x: -120
+      y: -60
+      width: 1400
+      height: 980
+    style:
+      fill: "linear-gradient(135deg, rgba(82, 215, 255, 0.6), rgba(255, 85, 164, 0.45))"
+      filter: "blur(0px)"
+    transform:
+      rotate: 12
+  - id: "halo-orb"
+    kind: "circle"
+    opacity: 0.6
+    blendMode: "soft-light"
+    coords:
+      x: 1220
+      y: 240
+      width: 420
+      height: 420
+    style:
+      background: "radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9), rgba(92, 205, 255, 0.1))"
+  - id: "aura-frame"
+    kind: "rect"
+    opacity: 0.4
+    coords:
+      x: 160
+      y: 120
+      width: 1600
+      height: 840
+    style:
+      border: "2px solid rgba(255,255,255,0.18)"
+      borderRadius: "96px"
+      boxShadow: "0 80px 160px rgba(0, 0, 0, 0.35)"
 regions:
   - id: "section-label"
     area: "section-label"

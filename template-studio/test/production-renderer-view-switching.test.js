@@ -126,7 +126,7 @@ test.describe('Production Renderer View Switching', () => {
 
     console.log = originalLog;
     assert.ok(logs.some((line) => line.includes('Panel is not visible, skipping render')));
-    assert.strictEqual(container.children.length, 0);
+    assert.match(container.textContent, /Waiting for production panel/i);
   });
 
   test('renders after canvas -> production switch', async () => {
@@ -136,7 +136,9 @@ test.describe('Production Renderer View Switching', () => {
     workbench.dataset.view = 'canvas';
     parentPanel.style.display = 'none';
     await renderProductionSlide(container);
-    assert.strictEqual(container.children.length, 0);
+    assert.match(container.textContent, /Waiting for production panel/i);
+    assert.strictEqual(container.children.length, 1);
+    assert.ok(container.querySelector('.production-preview-placeholder'));
 
     workbench.dataset.view = 'production';
     parentPanel.style.display = 'flex';
@@ -153,7 +155,9 @@ test.describe('Production Renderer View Switching', () => {
     workbench.dataset.view = 'slide';
     parentPanel.style.display = 'none';
     await renderProductionSlide(container);
-    assert.strictEqual(container.children.length, 0);
+    assert.match(container.textContent, /Waiting for production panel/i);
+    assert.strictEqual(container.children.length, 1);
+    assert.ok(container.querySelector('.production-preview-placeholder'));
 
     workbench.dataset.view = 'production';
     parentPanel.style.display = 'flex';

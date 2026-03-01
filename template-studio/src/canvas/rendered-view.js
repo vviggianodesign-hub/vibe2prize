@@ -18,6 +18,7 @@ import {
   normalizeRendererFlags
 } from '../../../core/layout/renderer-utils.js';
 import { collectDomOverflowIssues } from './dom-overflow.js';
+import { renderBackgroundLayerToDom } from './background-layer.js';
 const IMAGE_REGION_PADDING = '0.4rem';
 
 function applyStyleObject(element, style = {}) {
@@ -238,6 +239,21 @@ export function renderSlidePreview(container, resizeEntry) {
   board.dataset.previewChrome = flags.previewChrome ? 'true' : 'false';
   board.dataset.regionOutlines = flags.showRegionOutlines ? 'true' : 'false';
   container.appendChild(board);
+
+  const backgroundShapes = Array.isArray(state.backgroundShapes) ? state.backgroundShapes : [];
+  const showBackgroundLayer = Boolean(flags.showBackgroundShapes) && backgroundShapes.length > 0;
+  if (showBackgroundLayer) {
+    renderBackgroundLayerToDom({
+      board,
+      shapes: backgroundShapes,
+      scale,
+      canvasWidth: state.canvasWidth,
+      canvasHeight: state.canvasHeight,
+      boardWidth,
+      boardHeight,
+      visible: showBackgroundLayer
+    });
+  }
 
   // Log sizing diagnostics after layout settles
   requestAnimationFrame(() => {

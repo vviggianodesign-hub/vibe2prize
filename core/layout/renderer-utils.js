@@ -18,6 +18,7 @@ export function normalizeRendererFlags(flags = {}) {
     previewChrome: Boolean(flags.previewChrome),
     showDiagnostics: Boolean(flags.showDiagnostics),
     showRegionOutlines: Boolean(flags.showRegionOutlines ?? flags.previewChrome),
-    detectDomOverflow: flags.detectDomOverflow !== false
+    detectDomOverflow: flags.detectDomOverflow !== false,
+    showBackgroundShapes: flags.showBackgroundShapes !== false
   };
 }

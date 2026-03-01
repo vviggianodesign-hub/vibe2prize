@@ -75,7 +75,8 @@ function ensurePreviewFlagState() {
       previewChrome: true,
       showDiagnostics: true,
       showRegionOutlines: true,
-      detectDomOverflow: true
+      detectDomOverflow: true,
+      showBackgroundShapes: true
     };
   }
 }
@@ -92,11 +93,12 @@ function syncPaginationControls(controls) {
 function syncPreviewFlagControls(controls) {
   if (!controls?.previewToggles) return;
   ensurePreviewFlagState();
-  const { previewChrome, regionOutlines, diagnostics, domOverflow } = controls.previewToggles;
+  const { previewChrome, regionOutlines, diagnostics, domOverflow, backgroundShapes } = controls.previewToggles;
   if (previewChrome) previewChrome.checked = !!state.previewFlags.previewChrome;
   if (regionOutlines) regionOutlines.checked = !!state.previewFlags.showRegionOutlines;
   if (diagnostics) diagnostics.checked = !!state.previewFlags.showDiagnostics;
   if (domOverflow) domOverflow.checked = !!state.previewFlags.detectDomOverflow;
+  if (backgroundShapes) backgroundShapes.checked = !!state.previewFlags.showBackgroundShapes;
 }
 
 function coerceInt(value, { fallback = 0, min = -Infinity, max = Infinity } = {}) {
@@ -180,6 +182,15 @@ function initializeRendererControls(controls, renderPreview) {
     previewToggles.diagnostics.addEventListener('change', (event) => {
       ensurePreviewFlagState();
       state.previewFlags.showDiagnostics = !!event.target.checked;
+      syncPreviewFlagControls(controls);
+      renderPreview();
+    });
+  }
+
+  if (previewToggles.backgroundShapes) {
+    previewToggles.backgroundShapes.addEventListener('change', (event) => {
+      ensurePreviewFlagState();
+      state.previewFlags.showBackgroundShapes = !!event.target.checked;
       syncPreviewFlagControls(controls);
       renderPreview();
     });

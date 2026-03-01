@@ -142,6 +142,10 @@
               <input id="diagnosticsToggle" type="checkbox" checked />
               <span>Show Diagnostics</span>
             </label>
+            <label class="toggle-pill">
+              <input id="backgroundShapesToggle" type="checkbox" checked />
+              <span>Show Background Shapes</span>
+            </label>
           </div>
         </div>
       </section>
@@ -306,12 +310,23 @@
             TemplateStudio.renderGuides(guideLayer, previewGrid);
           };
 
-          const renderActivePreview = () => {
+          const scheduleProductionRender = ({ force = false } = {}) => {
+            if (!productionPreview) return;
+            if (force) {
+              productionPreview._forceRender = true;
+            }
+            const runRender = () => TemplateStudio.renderProductionSlide(productionPreview);
+            requestAnimationFrame(() => {
+              requestAnimationFrame(runRender);
+            });
+          };
+
+          const renderActivePreview = ({ forceProduction = false } = {}) => {
             const view = workbench.dataset.view;
             if (view === 'slide') {
               requestAnimationFrame(() => TemplateStudio.renderSlidePreview(slidePreview));
             } else if (view === 'production') {
-              requestAnimationFrame(() => TemplateStudio.renderProductionSlide(productionPreview));
+              scheduleProductionRender({ force: forceProduction });
             }
           };
 
@@ -364,7 +379,8 @@
             previewToggles: {
               previewChrome: document.getElementById('previewChromeToggle'),
               regionOutlines: document.getElementById('regionOutlineToggle'),
-              diagnostics: document.getElementById('diagnosticsToggle')
+              diagnostics: document.getElementById('diagnosticsToggle'),
+              backgroundShapes: document.getElementById('backgroundShapesToggle')
             }
           };
 
@@ -442,7 +458,7 @@
               if (view === 'canvas') {
                 renderCanvas();
               } else {
-                renderActivePreview();
+                renderActivePreview({ forceProduction: view === 'production' });
               }
             });
           });
@@ -463,7 +479,7 @@
             );
 
             TemplateStudio.updateSelectionControls(controls);
-            renderActivePreview();
+            renderActivePreview({ forceProduction: workbench.dataset.view === 'production' });
           });
 
           document.addEventListener('keydown', (e) => {

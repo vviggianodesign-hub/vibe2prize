@@ -11,6 +11,7 @@ import { styleObjectToCss } from '../utils/shared-styles.js';
 import { getRegionFrameStyle, calculateRegionPadding } from './region-layout.js';
 import { getBrandSnapshot } from '../branding/brands.js';
 import { computeRegionGeometry } from '../../../core/layout/region-geometry.js';
+import { buildBackgroundLayerReact, buildBackgroundLayerHtml } from './background-layer.js';
 
 const ZERO_DIMENSION_RETRY_MS = 250;
 
@@ -92,6 +93,14 @@ function showLoadingState(container, message = 'Loading production preview...') 
       <p>${message}</p>
     </div>
   `;
+}
+
+function clearLoadingState(container) {
+  if (!container) return;
+  const firstChild = container.firstElementChild;
+  if (firstChild && firstChild.classList && firstChild.classList.contains('production-preview-placeholder')) {
+    container.innerHTML = '';
+  }
 }
 
 function getWorkbenchForPanel(parentPanel) {
@@ -398,6 +407,9 @@ function createSimpleGridDesigner({ React, boxes, brandSnapshot, pagination, con
     boardHeight
   });
   
+  const backgroundShapes = Array.isArray(state.backgroundShapes) ? state.backgroundShapes : [];
+  const backgroundLayerVisible = state.previewFlags?.showBackgroundShapes !== false && backgroundShapes.length > 0;
+
   // Create a container with CSS classes like the preview
   const containerStyle = {
     position: 'relative',
@@ -493,9 +505,24 @@ function createSimpleGridDesigner({ React, boxes, brandSnapshot, pagination, con
     }, contentElement);
   });
 
+  const backgroundLayer = backgroundLayerVisible
+    ? buildBackgroundLayerReact({
+        React,
+        shapes: backgroundShapes,
+        scale: boardWidth / state.canvasWidth,
+        canvasWidth: state.canvasWidth,
+        canvasHeight: state.canvasHeight,
+        boardWidth,
+        boardHeight,
+        visible: backgroundLayerVisible
+      })
+    : null;
+
+  const layerAndChildren = backgroundLayer ? [backgroundLayer, ...children] : children;
+
   return React.createElement('div', {
     style: containerStyle
-  }, ...children);
+  }, ...layerAndChildren);
 }
 
 // Fallback renderer that doesn't require React
@@ -523,6 +550,9 @@ function renderFallbackSlide(container, boxes, brandSnapshot, pagination) {
   if (boardHeight <= 0) {
     boardHeight = containerHeight || state.canvasHeight;
   }
+
+  const backgroundShapes = Array.isArray(state.backgroundShapes) ? state.backgroundShapes : [];
+  const backgroundLayerVisible = state.previewFlags?.showBackgroundShapes !== false && backgroundShapes.length > 0;
 
   // Always set container dimensions to ensure it's visible
   if (boardWidth > 0 && boardHeight > 0) {
@@ -618,8 +648,21 @@ function renderFallbackSlide(container, boxes, brandSnapshot, pagination) {
     `;
   }).join('\n');
 
+  const backgroundLayer = backgroundLayerVisible
+    ? buildBackgroundLayerHtml({
+        shapes: backgroundShapes,
+        scale: boardWidth / state.canvasWidth,
+        canvasWidth: state.canvasWidth,
+        canvasHeight: state.canvasHeight,
+        boardWidth,
+        boardHeight,
+        visible: backgroundLayerVisible
+      })
+    : '';
+
   container.innerHTML = `
     <div style="${containerStyle}">
+      ${backgroundLayer || ''}
       ${regionsHTML}
     </div>
   `;
@@ -685,13 +728,16 @@ export async function renderProductionSlide(container, resizeEntry) {
 
   // Add a flag to force rendering for integration tests
   const forceRender = container._forceRender || false;
-  ensureVisibilityObserver(container, parentPanel, workbench);
 
   if (!forceRender && !isProductionPanelActive(parentPanel, workbench)) {
+    console.log('Panel is not visible, skipping render');
     showLoadingState(container, 'Waiting for production panel...');
     container._isRendering = false;
     return;
   }
+
+  clearLoadingState(container);
+  ensureVisibilityObserver(container, parentPanel, workbench);
   container._forceRender = false;
   
   // Prevent render loops with better coordination

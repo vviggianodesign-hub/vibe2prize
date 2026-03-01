@@ -314,6 +314,7 @@ previewFlags:
   previewChrome: false
   showDiagnostics: false
   showRegionOutlines: false
+  showBackgroundShapes: false
 ---
 
 # Pagination Template
@@ -328,6 +329,7 @@ previewFlags:
           <input id="previewChromeToggle" type="checkbox" checked />
           <input id="regionOutlineToggle" type="checkbox" checked />
           <input id="diagnosticsToggle" type="checkbox" checked />
+          <input id="backgroundShapesToggle" type="checkbox" checked />
         </div>
       `,
       async () => {
@@ -345,6 +347,7 @@ previewFlags:
           showDiagnostics: false,
           showRegionOutlines: false,
           detectDomOverflow: true,
+          showBackgroundShapes: false
         });
 
         assert.strictEqual(document.getElementById('pageNumberInput').value, '4');
@@ -353,6 +356,7 @@ previewFlags:
         assert.strictEqual(document.getElementById('previewChromeToggle').checked, false);
         assert.strictEqual(document.getElementById('diagnosticsToggle').checked, false);
         assert.strictEqual(document.getElementById('regionOutlineToggle').checked, false);
+        assert.strictEqual(document.getElementById('backgroundShapesToggle').checked, false);
       }
     );
   });
