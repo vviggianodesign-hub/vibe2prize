@@ -29,31 +29,6 @@ layout:
       area: "hero-subtitle"
       maxWords: 28
     - type: "GridArea"
-      id: "summary-body"
-      role: "supporting-text"
-      area: "summary"
-      maxWords: 160
-    - type: "GridArea"
-      id: "insight-callout"
-      role: "key-data"
-      area: "insight"
-      maxWords: 40
-    - type: "GridArea"
-      id: "stat-cluster"
-      role: "data-table"
-      area: "stat-cluster"
-      maxWords: 40
-    - type: "GridArea"
-      id: "stat-caption"
-      role: "context-info"
-      area: "stat-caption"
-      maxWords: 60
-    - type: "GridArea"
-      id: "quote"
-      role: "supporting-text"
-      area: "quote"
-      maxWords: 70
-    - type: "GridArea"
       id: "brand-logo"
       role: "logo"
       area: "logo"
@@ -70,7 +45,7 @@ layout:
   gap: "0.5rem"
 exclusions:
   top: 5
-  bottom: 4
+  bottom: 3
   left: 1
   right: 1
 brand:
@@ -121,85 +96,10 @@ regions:
       y: 4
       width: 52
       height: 1
-  - id: "summary-body"
-    area: "summary"
-    role: "supporting-text"
-    required: true
-    inputType: "text"
-    type: "supporting-text"
-    fieldTypes:
-      - "supporting-text"
-    maxWords: 160
-    llmHint: "Core narrative paragraph or two."
-    grid:
-      x: 1
-      y: 6
-      width: 52
-      height: 18
-  - id: "insight-callout"
-    area: "insight"
-    role: "key-data"
-    required: false
-    inputType: "text"
-    type: "key-data"
-    fieldTypes:
-      - "key-data"
-    maxWords: 40
-    llmHint: "Highlight metric or actionable insight."
-    grid:
-      x: 54
-      y: 6
-      width: 25
-      height: 35
-  - id: "stat-cluster"
-    area: "stat-cluster"
-    role: "data-table"
-    required: false
-    inputType: "table"
-    type: "data-table"
-    fieldTypes:
-      - "data-table"
-    maxWords: 40
-    llmHint: "Structured stats or checklist."
-    grid:
-      x: 1
-      y: 24
-      width: 26
-      height: 8
-  - id: "stat-caption"
-    area: "stat-caption"
-    role: "context-info"
-    required: false
-    inputType: "text"
-    type: "context-info"
-    fieldTypes:
-      - "context-info"
-    maxWords: 60
-    llmHint: "Explain how the data ties back to the story."
-    grid:
-      x: 27
-      y: 24
-      width: 26
-      height: 8
-  - id: "quote"
-    area: "quote"
-    role: "supporting-text"
-    required: false
-    inputType: "text"
-    type: "supporting-text"
-    fieldTypes:
-      - "supporting-text"
-    maxWords: 70
-    llmHint: "Short testimonial or voice-of-customer pull."
-    grid:
-      x: 1
-      y: 32
-      width: 52
-      height: 9
   - id: "brand-logo"
     area: "logo"
     role: "logo"
-    required: false
+    required: true
     inputType: "image"
     type: "logo"
     fieldTypes:
@@ -207,9 +107,9 @@ regions:
     llmHint: "Brand identifier or watermark."
     grid:
       x: 3
-      y: 42
+      y: 43
       width: 10
-      height: 2
+      height: 1
   - id: "page-number"
     area: "page-number"
     role: "page-number"
@@ -221,9 +121,9 @@ regions:
     llmHint: "Slide number indicator."
     grid:
       x: 68
-      y: 42
+      y: 43
       width: 9
-      height: 2
+      height: 1
   - id: "footer"
     area: "footer"
     role: "footer"
@@ -252,22 +152,7 @@ import { GridDesigner, GridArea, ContentRenderer } from "../../core/layout/compo
   <GridArea area="hero-subtitle" contentType="secondary-title" importance="supporting">
     <ContentRenderer type="secondary-title" content={""} />
   </GridArea>
-  <GridArea area="summary" contentType="supporting-text" importance="critical">
-    <ContentRenderer type="supporting-text" content={""} />
-  </GridArea>
-  <GridArea area="insight" contentType="key-data" importance="supporting">
-    <ContentRenderer type="key-data" content={""} />
-  </GridArea>
-  <GridArea area="stat-cluster" contentType="data-table" importance="supporting">
-    <ContentRenderer type="data-table" content={""} />
-  </GridArea>
-  <GridArea area="stat-caption" contentType="context-info" importance="supporting">
-    <ContentRenderer type="context-info" content={""} />
-  </GridArea>
-  <GridArea area="quote" contentType="supporting-text" importance="supporting">
-    <ContentRenderer type="supporting-text" content={""} />
-  </GridArea>
-  <GridArea area="logo" contentType="logo" importance="supporting">
+  <GridArea area="logo" contentType="logo" importance="critical">
     <ContentRenderer type="logo" content={""} />
   </GridArea>
   <GridArea area="page-number" contentType="page-number" importance="critical">

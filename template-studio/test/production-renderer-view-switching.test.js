@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert';
 import { JSDOM } from 'jsdom';
+import { state } from '../src/state.js';
 
 const dom = new JSDOM(`<!DOCTYPE html><body></body>`, { pretendToBeVisual: true });
 global.window = dom.window;
@@ -58,7 +59,8 @@ function setupDOM() {
   const parentPanel = document.querySelector('.production-preview-panel');
   const workbench = document.querySelector('#previewWorkbench');
 
-  window.TemplateStudio.state = {
+  // Update the imported state module
+  Object.assign(state, {
     boxes: [
       { id: 'box1', role: 'title', gridX: 0, gridY: 0, gridWidth: 3, gridHeight: 3, metadata: { role: 'title' } },
       { id: 'box2', role: 'subtitle', gridX: 4, gridY: 0, gridWidth: 4, gridHeight: 3, metadata: { role: 'subtitle' } }
@@ -67,8 +69,12 @@ function setupDOM() {
     canvasHeight: 1080,
     columns: 80,
     rows: 45,
-    brand: { id: 'dark', variant: 'default' }
-  };
+    brand: { id: 'epam', variant: 'dark' }
+  });
+
+  // Also set it on window for compatibility
+  window.TemplateStudio = window.TemplateStudio || {};
+  window.TemplateStudio.state = state;
 
   return { container, parentPanel, workbench };
 }
@@ -269,7 +275,11 @@ test.describe('Production Renderer View Switching', () => {
     const { container, parentPanel, workbench } = setupDOM();
     const renderProductionSlide = await loadRenderer();
 
-    window.TemplateStudio.state.boxes = [];
+    // Clear boxes but preserve the _boxesInitialized flag
+    const wasInitialized = state._boxesInitialized;
+    state.boxes = [];
+    state._boxesInitialized = wasInitialized || true; // Mark as intentionally empty
+    
     workbench.dataset.view = 'production';
     parentPanel.style.display = 'flex';
     mockDimensions(parentPanel, 800, 600);

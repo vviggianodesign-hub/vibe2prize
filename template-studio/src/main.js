@@ -43,6 +43,50 @@ import { initDiagnosticsPanel } from './ui/diagnostics-panel.js';
 // Re-export for HTML script usage
 let masterTemplateHydrationPromise = null;
 
+const FALLBACK_LAYOUT = [
+  {
+    id: 'fallback-title',
+    gridX: 0,
+    gridY: 0,
+    gridWidth: 24,
+    gridHeight: 8,
+    metadata: { role: 'primary-title' }
+  },
+  {
+    id: 'fallback-insight',
+    gridX: 0,
+    gridY: 10,
+    gridWidth: 34,
+    gridHeight: 12,
+    metadata: {
+      role: 'data-table',
+      previewTable: {
+        columns: ['Column A', 'Column B'],
+        rows: [['Alpha', 'Beta'], ['Gamma', 'Delta']]
+      }
+    }
+  },
+  {
+    id: 'fallback-logo',
+    gridX: 60,
+    gridY: 0,
+    gridWidth: 10,
+    gridHeight: 8,
+    metadata: { role: 'logo', inputType: 'image' }
+  }
+];
+
+function seedFallbackLayout() {
+  if (state.boxes?.length) {
+    return;
+  }
+
+  state.boxes = FALLBACK_LAYOUT.map((box) => ({ ...box }));
+  state.metadata = Object.fromEntries(
+    FALLBACK_LAYOUT.map((box) => [box.id, { ...box.metadata }])
+  );
+}
+
 async function hydrateMasterTemplate({ brandId = state.brand?.id, variantId = state.brand?.variant, force = false } = {}) {
   if (!force && state.boxes?.length) {
     return { applied: false, reason: 'boxes-present' };
@@ -143,7 +187,16 @@ export function init() {
   pushHistory();
   applyBrandTheme(state.brand?.id, state.brand?.variant);
   const masterTemplateReady = hydrateMasterTemplate();
-  
+  masterTemplateReady
+    .then((result) => {
+      if (!result?.applied) {
+        seedFallbackLayout();
+      }
+    })
+    .catch(() => {
+      seedFallbackLayout();
+    });
+
   // Set up global references
   window.TemplateStudio = {
     state,
@@ -186,9 +239,19 @@ export function init() {
     listBrandThemeOptions,
     getBrandSnapshot,
     hydrateMasterTemplate,
-    masterTemplateReady
+    masterTemplateReady,
+    seedFallbackLayout
   };
 
+  if (typeof document !== 'undefined') {
+    document.addEventListener('masterTemplateHydrated', () => {
+      if (!state.boxes?.length) {
+        seedFallbackLayout();
+      }
+    });
+  }
+
+  seedFallbackLayout();
   window.TemplateStudio.__initialized = true;
 }
 

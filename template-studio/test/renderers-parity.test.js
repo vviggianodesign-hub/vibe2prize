@@ -36,7 +36,8 @@ function defineDimensions(element, width = 960, height = 540) {
 
 function snapshotRegions(root) {
   const map = new Map();
-  root.querySelectorAll('.slide-preview-region').forEach((region) => {
+  // Look for both slide-preview-region (preview) and production-region (production)
+  root.querySelectorAll('.slide-preview-region, .production-region').forEach((region) => {
     const boxId = region.dataset.boxId;
     if (!boxId) {
       return;
@@ -244,10 +245,11 @@ describe('Preview vs Production renderer parity', () => {
     const productionLogo = productionContainer.querySelector('[data-role="logo"]');
     assert(productionLogo, 'Production logo region should exist');
     const productionStyles = window.getComputedStyle(productionLogo);
-    assert.strictEqual(
-      productionStyles.getPropertyValue('border-top-width'),
-      '0px',
-      'Production logo region should remain visually borderless'
+    // When border is none, computed border-top-width returns empty string
+    const borderTopWidth = productionStyles.getPropertyValue('border-top-width');
+    assert.ok(
+      borderTopWidth === '0px' || borderTopWidth === '',
+      `Production logo region should be borderless, got: "${borderTopWidth}"`
     );
   });
 

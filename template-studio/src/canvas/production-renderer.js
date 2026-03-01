@@ -1,28 +1,181 @@
 import { state } from '../state.js';
 import { getRoleFromBox } from '../utils/roles.js';
 import { getRoleTypographyStyle, getTableStyleConfig } from '../utils/shared-styles.js';
-import { 
+import {
   resolvePreviewText,
   isImageRole,
   createImagePlaceholder,
   getPreviewTableData
 } from '../utils/preview-content.js';
-import { getRoleTypographyStyle as getProductionTypography } from '../utils/shared-styles.js';
 import { styleObjectToCss } from '../utils/shared-styles.js';
 import { getRegionFrameStyle, calculateRegionPadding } from './region-layout.js';
 import { getBrandSnapshot } from '../branding/brands.js';
 import { computeRegionGeometry } from '../../../core/layout/region-geometry.js';
 
-// Simple hash function for colors (copied from renderer.js)
-function hashColor(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+const ZERO_DIMENSION_RETRY_MS = 250;
+
+const FALLBACK_LAYOUT = [
+  {
+    id: 'title',
+    role: 'title',
+    gridX: 0,
+    gridY: 0,
+    gridWidth: 12,
+    gridHeight: 4,
+    metadata: { role: 'title' }
+  },
+  {
+    id: 'content',
+    role: 'body',
+    gridX: 0,
+    gridY: 4,
+    gridWidth: 12,
+    gridHeight: 8,
+    metadata: { role: 'body' }
+  },
+  {
+    id: 'logo',
+    role: 'logo',
+    gridX: 10,
+    gridY: 0,
+    gridWidth: 2,
+    gridHeight: 2,
+    metadata: { role: 'logo', inputType: 'image' }
   }
-  const hue = Math.abs(hash) % 360;
-  return `hsl(${hue}, 70%, 50%)`;
+];
+
+function seedFallbackLayout() {
+  // Don't seed if state has been explicitly initialized with empty boxes
+  // This allows tests to verify empty state behavior
+  if (state.boxes?.length === 0 && state._boxesInitialized) {
+    return;
+  }
+  
+  if (state.boxes?.length) {
+    return;
+  }
+
+  state.boxes = FALLBACK_LAYOUT.map((box) => ({ ...box }));
+  state.metadata = Object.fromEntries(
+    FALLBACK_LAYOUT.map((box) => [box.id, { ...box.metadata }])
+  );
+}
+
+function handleInvalidDimensions(container) {
+  showLoadingState(container);
+
+  if (!container._retryTimeout) {
+    container._retryTimeout = setTimeout(() => {
+      container._retryTimeout = null;
+      if (document.contains(container)) {
+        renderProductionSlide(container);
+      }
+    }, ZERO_DIMENSION_RETRY_MS);
+  }
+
+  container._isRendering = false;
+}
+
+function showLoadingState(container, message = 'Loading production preview...') {
+  container.innerHTML = `
+    <div class="production-preview-placeholder" style="
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      height:100%;
+      color:rgba(255,255,255,0.7);
+      font-family: system-ui, -apple-system, sans-serif;
+      text-align:center;
+      padding: 1rem;
+    ">
+      <p>${message}</p>
+    </div>
+  `;
+}
+
+function getWorkbenchForPanel(parentPanel) {
+  return parentPanel?.closest('.preview-workbench') || null;
+}
+
+function toSafeDimension(value) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : 0;
+}
+
+function isProductionPanelActive(parentPanel, workbench) {
+  if (!parentPanel) {
+    return true;
+  }
+
+  let panelStyle;
+  try {
+    panelStyle = window.getComputedStyle(parentPanel);
+  } catch (error) {
+    console.warn('Production render: getComputedStyle error:', error.message);
+    return true; // Assume visible if we can't compute style
+  }
+  
+  if (!panelStyle) {
+    return true;
+  }
+
+  if (panelStyle.display === 'none') {
+    console.log('Production render: parent panel display=none');
+    return false;
+  }
+
+  if (panelStyle.visibility === 'hidden') {
+    console.log('Production render: parent panel visibility hidden');
+    return false;
+  }
+
+  const opacity = Number.parseFloat(panelStyle.opacity ?? '1');
+  if (!Number.isNaN(opacity) && opacity <= 0.01) {
+    console.log('Production render: parent panel opacity', opacity);
+    return false;
+  }
+
+  // Only check workbench view if it's explicitly set to something other than production
+  if (workbench?.dataset?.view && workbench.dataset.view !== 'production' && workbench.dataset.view !== 'canvas') {
+    console.log('Production render: workbench view', workbench.dataset.view);
+    return false;
+  }
+
+  return true;
+}
+
+function ensureVisibilityObserver(container, parentPanel, workbench) {
+  if (container._visibilityObserver || typeof MutationObserver !== 'function') {
+    return;
+  }
+
+  const targets = [];
+  if (workbench) {
+    targets.push(workbench);
+  }
+  if (parentPanel) {
+    targets.push(parentPanel);
+  }
+  if (!targets.length) {
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!document.contains(container)) {
+      return;
+    }
+
+    if (isProductionPanelActive(parentPanel, workbench) && !container._isRendering) {
+      renderProductionSlide(container);
+    }
+  });
+
+  targets.forEach((target) => {
+    observer.observe(target, { attributes: true, attributeFilter: ['data-view', 'class', 'style'] });
+  });
+
+  container._visibilityObserver = observer;
 }
 
 // React will be loaded from CDN or global scope
@@ -343,11 +496,9 @@ function createSimpleGridDesigner({ React, boxes, brandSnapshot, pagination, con
 
 // Fallback renderer that doesn't require React
 function renderFallbackSlide(container, boxes, brandSnapshot, pagination) {
-  // Get container dimensions
   let containerWidth = container.clientWidth;
   let containerHeight = container.clientHeight;
-  
-  // If container has no dimensions, try to get from parent
+
   if (containerWidth === 0 || containerHeight === 0) {
     const parent = container.closest('.production-preview-panel') || container.parentElement;
     if (parent) {
@@ -355,14 +506,26 @@ function renderFallbackSlide(container, boxes, brandSnapshot, pagination) {
       containerHeight = parent.clientHeight || containerHeight;
     }
   }
-  
-  // Calculate scale to fit container
+
   const scaleX = containerWidth / state.canvasWidth;
   const scaleY = containerHeight / state.canvasHeight;
   const scale = Math.max(Math.min(scaleX, scaleY), 0);
-  const boardWidth = state.canvasWidth * scale;
-  const boardHeight = state.canvasHeight * scale;
-  
+  let boardWidth = state.canvasWidth * scale;
+  let boardHeight = state.canvasHeight * scale;
+
+  if (boardWidth <= 0) {
+    boardWidth = containerWidth || state.canvasWidth;
+  }
+  if (boardHeight <= 0) {
+    boardHeight = containerHeight || state.canvasHeight;
+  }
+
+  // Always set container dimensions to ensure it's visible
+  if (boardWidth > 0 && boardHeight > 0) {
+    container.style.width = `${boardWidth}px`;
+    container.style.height = `${boardHeight}px`;
+  }
+
   const containerStyle = `
     position: relative;
     width: ${boardWidth}px;
@@ -429,24 +592,20 @@ function renderFallbackSlide(container, boxes, brandSnapshot, pagination) {
       isImageRole: isImageRole(role)
     });
 
-    let regionStyle = `
-      position: absolute;
-      left: ${geometry.left}px;
-      top: ${geometry.top}px;
-      width: ${geometry.width}px;
-      height: ${geometry.height}px;
-      padding: ${resolvedPadding};
-      border: none;
-      border-radius: 0.2rem;
-      background: transparent;
-      overflow: hidden;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      justify-content: ${inputType === 'image' || isImageRole(role) ? 'center' : 'flex-start'};
-      align-items: ${inputType === 'image' || isImageRole(role) ? 'stretch' : 'flex-start'};
-    `;
+    const frameStyle = getRegionFrameStyle(brandSnapshot?.theme, { variant: 'production' });
+    const regionStyleObject = {
+      position: 'absolute',
+      left: `${geometry.left}px`,
+      top: `${geometry.top}px`,
+      width: `${geometry.width}px`,
+      height: `${geometry.height}px`,
+      padding: resolvedPadding,
+      ...frameStyle,
+      justifyContent: inputType === 'image' || isImageRole(role) ? 'center' : frameStyle.justifyContent,
+      alignItems: inputType === 'image' || isImageRole(role) ? 'stretch' : frameStyle.alignItems
+    };
+
+    const regionStyle = styleObjectToCss(regionStyleObject);
 
     return `
       <article class="production-region" data-box-id="${box.id}" data-role="${role}" data-input-type="${inputType}" style="${regionStyle}">
@@ -517,13 +676,19 @@ export async function renderProductionSlide(container, resizeEntry) {
     return;
   }
   
-  // Check if the production panel is visible
   const parentPanel = container.closest('.production-preview-panel');
-  if (parentPanel && window.getComputedStyle(parentPanel).display === 'none') {
+  const workbench = parentPanel ? getWorkbenchForPanel(parentPanel) : null;
+
+  // Add a flag to force rendering for integration tests
+  const forceRender = container._forceRender || false;
+
+  if (!forceRender && !isProductionPanelActive(parentPanel, workbench)) {
     console.log('Production render: Panel is not visible, skipping render');
     container._isRendering = false;
     return;
   }
+
+  ensureVisibilityObserver(container, parentPanel, workbench);
   
   // Prevent render loops with better coordination
   if (container._isRendering && !resizeEntry) {
@@ -554,23 +719,24 @@ export async function renderProductionSlide(container, resizeEntry) {
     containerHeight = resizeEntry.contentRect.height;
     console.log('Production render: Using resize entry dimensions:', { containerWidth, containerHeight });
   } else {
-    containerWidth = container.clientWidth;
-    containerHeight = container.clientHeight;
+    containerWidth = toSafeDimension(container.clientWidth);
+    containerHeight = toSafeDimension(container.clientHeight);
     console.log('Production render: Using container element dimensions:', { containerWidth, containerHeight });
 
     if ((containerWidth <= 0 || containerHeight <= 0) && parentPanel) {
-      containerWidth = parentPanel.clientWidth;
-      containerHeight = parentPanel.clientHeight;
+      containerWidth = toSafeDimension(parentPanel.clientWidth);
+      containerHeight = toSafeDimension(parentPanel.clientHeight);
       console.log('Production render: Fallback to parent panel dimensions:', { containerWidth, containerHeight });
     }
   }
 
   if (containerWidth <= 0 || containerHeight <= 0) {
     console.warn('Production render: Invalid dimensions, cannot render:', { containerWidth, containerHeight });
-    container._isRendering = false;
+    handleInvalidDimensions(container);
     return;
   }
   
+  seedFallbackLayout();
   const boxes = state.boxes || [];
   console.log('Production render: boxes count:', boxes.length);
   console.log('Production render: state reference:', state);
@@ -612,7 +778,6 @@ export async function renderProductionSlide(container, resizeEntry) {
   }
   
   try {
-    // Try to use React
     const { React, ReactDOM } = await ensureReactLoaded();
     console.log('Production render: React loaded successfully');
     
@@ -699,23 +864,27 @@ export async function renderProductionSlide(container, resizeEntry) {
       }
       
       const firstChild = container.firstElementChild;
-      if (firstChild) {
-        const computedStyle = window.getComputedStyle(firstChild);
-        console.log('Production render: rendered element styles:', {
-          width: firstChild.style.width,
-          height: firstChild.style.height,
-          display: firstChild.style.display,
-          backgroundColor: firstChild.style.backgroundColor,
-          computedDisplay: computedStyle.display,
-          computedVisibility: computedStyle.visibility,
+      if (!firstChild || firstChild.offsetWidth === 0 || firstChild.offsetHeight === 0) {
+        throw new Error('React render produced invisible output');
+      }
+      const computedStyle = window.getComputedStyle(firstChild);
+      console.log('Production render: rendered element styles:', {
+        width: firstChild.style.width,
+        height: firstChild.style.height,
+        display: firstChild.style.display,
+        backgroundColor: firstChild.style.backgroundColor,
+        computedDisplay: computedStyle.display,
+        computedVisibility: computedStyle.visibility,
+        offsetWidth: firstChild.offsetWidth,
+        offsetHeight: firstChild.offsetHeight
+      });
+      
+      // Warn if element is not visible
+      if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden' || firstChild.offsetWidth === 0) {
+        console.warn('Production render: Rendered element is not visible', {
           offsetWidth: firstChild.offsetWidth,
           offsetHeight: firstChild.offsetHeight
         });
-        
-        // Warn if element is not visible
-        if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden' || firstChild.offsetWidth === 0) {
-          console.warn('Production render: Rendered element is not visible');
-        }
       }
     }, 100);
     

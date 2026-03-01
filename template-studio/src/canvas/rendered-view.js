@@ -284,6 +284,7 @@ export function renderSlidePreview(container, resizeEntry) {
     } else if (inputType === 'image' || isImageRole(role)) {
       region.style.justifyContent = 'center';
       region.style.alignItems = 'stretch';
+      region.style.gap = '0px';
       const brandImage = createBrandImage({ snapshot: brandSnapshot, role });
       if (brandImage) {
         region.appendChild(brandImage);

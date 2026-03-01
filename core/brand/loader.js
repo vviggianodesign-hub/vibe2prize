@@ -27,9 +27,16 @@ if (!isBrowser) {
 }
 
 const ROOT = isBrowser ? '/' : pathModule.resolve(process.cwd());
-const TEMPLATES_DIR = isBrowser ? '/templates' : pathModule.join(ROOT, 'templates');
+const TEMPLATES_DIR = isBrowser ? '/templates' : 
+  (ROOT.includes('template-studio') ? 
+    pathModule.join(ROOT, '..', 'templates') :
+    pathModule.join(ROOT, 'templates'));
 const BRAND_INDEX_PATH = isBrowser ? '/templates/brands.json' : pathModule.join(TEMPLATES_DIR, 'brands.json');
-const BRAND_SCHEMA_PATH = isBrowser ? '/core/brand/brand-schema.json' : pathModule.join(ROOT, 'core', 'brand', 'brand-schema.json');
+// Adjust schema path to work from template-studio directory during tests
+const BRAND_SCHEMA_PATH = isBrowser ? '/core/brand/brand-schema.json' : 
+  (ROOT.includes('template-studio') ? 
+    pathModule.join(ROOT, '..', 'core', 'brand', 'brand-schema.json') :
+    pathModule.join(ROOT, 'core', 'brand', 'brand-schema.json'));
 
 /** @type {Array<{id: string, label: string, version: number|null}>} */
 let brandIndex = [];

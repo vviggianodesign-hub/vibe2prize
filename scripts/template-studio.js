@@ -93,6 +93,36 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === 'POST' && req.url === '/__logs') {
+    let body = '';
+    req.on('data', (chunk) => {
+      body += chunk;
+      if (body.length > 1_000_000) {
+        req.destroy();
+      }
+    });
+    req.on('end', () => {
+      try {
+        const payload = JSON.parse(body || '{}');
+        const level = typeof payload.level === 'string' ? payload.level : 'log';
+        const args = Array.isArray(payload.args) ? payload.args : [];
+        const tag = '[StudioConsole]';
+        if (typeof console[level] === 'function') {
+          console[level](tag, ...args);
+        } else {
+          console.log(tag, ...args);
+        }
+      } catch (error) {
+        console.warn('[StudioConsole] Failed to parse payload:', error.message);
+      }
+      res.writeHead(204).end();
+    });
+    req.on('error', () => {
+      res.writeHead(500).end();
+    });
+    return;
+  }
+
   const targetPath = resolveRequestPath(req.url);
   if (!targetPath) {
     sendNotFound(res);
