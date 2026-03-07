@@ -183,19 +183,22 @@ export function startResize(e, box, handle) {
 }
 
 export function handleMouseMove(e, previewGrid, renderPreview) {
+  const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+  const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
   if (state.isDrawing && state.dragStart) {
     const rect = previewGrid.getBoundingClientRect();
     const cellPixelSizeX = rect.width / state.columns;
     const cellPixelSizeY = rect.height / state.rows;
     
     // Update grid coordinates directly
-    const nextGridX = Math.floor((e.clientX - rect.left) / cellPixelSizeX);
-    const nextGridY = Math.floor((e.clientY - rect.top) / cellPixelSizeY);
+    const nextGridX = Math.floor((clientX - rect.left) / cellPixelSizeX);
+    const nextGridY = Math.floor((clientY - rect.top) / cellPixelSizeY);
     state.dragStart.currentGridX = nextGridX;
     state.dragStart.currentGridY = nextGridY;
 
-    const deltaX = Math.abs(e.clientX - state.dragStart.startClientX);
-    const deltaY = Math.abs(e.clientY - state.dragStart.startClientY);
+    const deltaX = Math.abs(clientX - state.dragStart.startClientX);
+    const deltaY = Math.abs(clientY - state.dragStart.startClientY);
     const gridChanged =
       nextGridX !== state.dragStart.startGridX ||
       nextGridY !== state.dragStart.startGridY;
@@ -209,8 +212,8 @@ export function handleMouseMove(e, previewGrid, renderPreview) {
     const cellPixelSizeX = rect.width / state.columns;
     const cellPixelSizeY = rect.height / state.rows;
     
-    const newGridX = Math.floor((e.clientX - rect.left - dragOffset.x) / cellPixelSizeX);
-    const newGridY = Math.floor((e.clientY - rect.top - dragOffset.y) / cellPixelSizeY);
+    const newGridX = Math.floor((clientX - rect.left - dragOffset.x) / cellPixelSizeX);
+    const newGridY = Math.floor((clientY - rect.top - dragOffset.y) / cellPixelSizeY);
     
     // Ensure box stays within bounds
     const boundedX = Math.max(0, Math.min(newGridX, state.columns - draggedBox.gridWidth));
@@ -232,8 +235,8 @@ export function handleMouseMove(e, previewGrid, renderPreview) {
     const cellPixelSizeX = rect.width / state.columns;
     const cellPixelSizeY = rect.height / state.rows;
     
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const mouseX = clientX - rect.left;
+    const mouseY = clientY - rect.top;
     
     let newX = originalBoxState.gridX;
     let newY = originalBoxState.gridY;

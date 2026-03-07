@@ -383,6 +383,8 @@ function serializeBrand(brand) {
 
 export function buildMdxSource(state) {
   const frontmatter = buildFrontmatterFromState(state);
+  // Attach content to frontmatter for easier hydration later
+  frontmatter.content = state.content || {};
   const layoutYaml = serializeLayout(frontmatter.layout);
   const regionsYaml = serializeRegions(frontmatter.regions);
   const templateSettingsYaml = serializeTemplateSettings(frontmatter.templateSettings);
@@ -405,14 +407,14 @@ export function buildMdxSource(state) {
     '---',
   ].join('\n');
 
-  const body = buildMdxBody(frontmatter.layout.template, frontmatter.regions);
+  const body = buildMdxBody(frontmatter.layout.template, frontmatter.regions, state.content);
   const source = `${frontmatterYaml}\n\n${body}\n`;
   const filename = `${frontmatter.layout.template}.mdx`;
 
   return { frontmatter, body, source, filename };
 }
 
-function buildMdxBody(templateName, regions) {
+function buildMdxBody(templateName, regions, contentMap = {}) {
   const lines = [
     'import { GridDesigner, GridArea, ContentRenderer } from "../../core/layout/components.js";',
     '',
@@ -421,10 +423,24 @@ function buildMdxBody(templateName, regions) {
 
   regions.forEach((region) => {
     const importance = region.required ? 'critical' : 'supporting';
+    const content = contentMap[region.id] || "";
+    const isCustomHtml = region.role === 'custom-html';
+
     lines.push(
       `  <GridArea area="${escapeYamlString(region.area)}" contentType="${escapeYamlString(region.role)}" importance="${importance}">`
     );
-    lines.push(`    <ContentRenderer type="${escapeYamlString(region.role)}" content={""} />`);
+
+    if (isCustomHtml) {
+        // Try to parse as JSON if it looks like { "html": ..., "css": ... }
+        let contentValue = `"${escapeYamlString(content)}"`;
+        if (content.trim().startsWith('{')) {
+            contentValue = `{${content.trim().slice(1, -1)}}`; // simplified
+        }
+        lines.push(`    <ContentRenderer type="${escapeYamlString(region.role)}" content={${contentValue}} />`);
+    } else {
+        lines.push(`    <ContentRenderer type="${escapeYamlString(region.role)}" content={"${escapeYamlString(content)}"} />`);
+    }
+
     lines.push('  </GridArea>');
   });
 

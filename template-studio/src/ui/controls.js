@@ -1,5 +1,6 @@
 import { state } from '../state.js';
 import { downloadMdxFile } from '../persistence/mdx.js';
+import { exportToPptx } from '../persistence/pptx.js';
 import { importMDXFile } from '../persistence/importer.js';
 import { applyRoleMetadataToBox, getRoleForPreset } from './semantic-presets.js';
 import { applyBrandTheme, listBrandOptions, listBrandThemeOptions, getBrandSnapshot, emitBrandStateChanged } from '../branding/brands.js';
@@ -329,6 +330,21 @@ export function attachControlHandlers(controls, renderPreview, renderSnippet, re
       }
 
       triggerDownload();
+    });
+  }
+
+  if (controls.downloadPptx) {
+    controls.downloadPptx.addEventListener('click', async () => {
+      if (!state.boxes.length) {
+        alert('Add at least one region before exporting to PPTX.');
+        return;
+      }
+      try {
+          await exportToPptx(state);
+      } catch (error) {
+          console.error('Failed to export PPTX', error);
+          alert('Failed to export PPTX: ' + error.message);
+      }
     });
   }
 
