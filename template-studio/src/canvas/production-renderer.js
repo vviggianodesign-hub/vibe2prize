@@ -428,8 +428,9 @@ function createSimpleGridDesigner({ React, boxes, brandSnapshot, pagination, con
     const role = getRoleFromBox(box);
     const inputType = box.metadata?.inputType || 'text';
     
-    // Use the exact same content resolution logic as the preview
-    const basePreviewText = resolvePreviewText(box, role);
+    // Use user content if available, otherwise use preview text
+    const userContent = state.content && state.content[box.id];
+    const basePreviewText = userContent || resolvePreviewText(box, role);
     const footerAwareCopy = resolveFooterCopy({ box, role, previewText: basePreviewText, brandSnapshot });
     const systemCopy = resolvePageNumberCopy({ role, pagination });
     const content = systemCopy || footerAwareCopy || basePreviewText || '';
@@ -577,8 +578,9 @@ function renderFallbackSlide(container, boxes, brandSnapshot, pagination) {
     const role = getRoleFromBox(box);
     const inputType = box.metadata?.inputType || 'text';
     
-    // Use the exact same content resolution logic as the preview
-    const basePreviewText = resolvePreviewText(box, role);
+    // Use user content if available, otherwise use preview text
+    const userContent = state.content && state.content[box.id];
+    const basePreviewText = userContent || resolvePreviewText(box, role);
     const footerAwareCopy = resolveFooterCopy({ box, role, previewText: basePreviewText, brandSnapshot });
     const systemCopy = resolvePageNumberCopy({ role, pagination });
     const content = systemCopy || footerAwareCopy || basePreviewText || '';

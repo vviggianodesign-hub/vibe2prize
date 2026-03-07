@@ -441,6 +441,62 @@ export const EPAMGridElement = ({
 };
 
 // Content Renderer - Renders different content types with appropriate styling
+// Custom HTML Component - For "vibe coding" with raw HTML/CSS
+export const CustomHTML = ({ html, css, className = '', ...props }) => {
+  const containerRef = React.useRef(null);
+  const id = React.useId().replace(/:/g, '');
+  const scopeClass = `custom-html-${id}`;
+
+  const renderedCSS = css ? `
+    .${scopeClass} {
+      ${css}
+    }
+  ` : '';
+
+  return React.createElement(
+    'div',
+    {
+      className: `custom-html-container ${scopeClass} ${className}`.trim(),
+      ...props
+    },
+    renderedCSS ? React.createElement('style', null, renderedCSS) : null,
+    React.createElement('div', {
+      ref: containerRef,
+      dangerouslySetInnerHTML: { __html: html }
+    })
+  );
+};
+
+// Smart Box Component - Themed container using brand variables
+export const SmartBox = ({
+  variant = 'panel',
+  padding = '1.5rem',
+  borderRadius = '0.75rem',
+  children,
+  className = '',
+  style = {},
+  ...props
+}) => {
+  const baseStyles = {
+    padding,
+    borderRadius,
+    background: variant === 'panel' ? 'var(--panel)' : 'transparent',
+    border: variant === 'panel' ? '1px solid var(--panel-border)' : 'none',
+    color: 'var(--text-primary)',
+    ...style
+  };
+
+  return React.createElement(
+    'div',
+    {
+      className: `smart-box smart-box--${variant} ${className}`.trim(),
+      style: baseStyles,
+      ...props
+    },
+    children
+  );
+};
+
 export const ContentRenderer = ({ 
   type, 
   content, 
@@ -541,6 +597,21 @@ export const ContentRenderer = ({
           content.map((item, index) => React.createElement('li', { key: index }, item)) :
           content
       );
+
+    case 'custom-html':
+      return React.createElement(CustomHTML, {
+        html: typeof content === 'object' ? content.html : content,
+        css: typeof content === 'object' ? content.css : '',
+        className,
+        ...props
+      });
+
+    case 'smart-box':
+      return React.createElement(SmartBox, {
+        ... (typeof content === 'object' ? content : { children: content }),
+        className,
+        ...props
+      });
 
     case 'page-number': {
       const resolvedPageNumber = resolvePageNumberValue({ content, rendererContext });

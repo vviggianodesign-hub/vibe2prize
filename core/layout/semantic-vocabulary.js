@@ -109,6 +109,22 @@ const ROLE_DEFINITIONS = {
     required: false,
     inputType: 'text',
     fieldTypes: ['page-number']
+  },
+  'custom-html': {
+    synonyms: ['vibe', 'raw html', 'custom code'],
+    level: 3,
+    description: 'Raw HTML and CSS for unconstrained "vibe" layouts',
+    characteristics: ['flexible', 'custom', 'unconstrained'],
+    inputType: 'text',
+    fieldTypes: ['custom-html']
+  },
+  'smart-box': {
+    synonyms: ['container', 'panel', 'themed box'],
+    level: 3,
+    description: 'A themed container that follows brand guidelines',
+    characteristics: ['structured', 'branded', 'consistent'],
+    inputType: 'text',
+    fieldTypes: ['smart-box']
   }
 };
 

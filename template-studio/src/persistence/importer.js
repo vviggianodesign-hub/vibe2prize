@@ -406,6 +406,12 @@ export function applyFrontmatterToState(frontmatter) {
     updateInputValue('exclusionLeft', state.exclusions.left);
     updateInputValue('exclusionRight', state.exclusions.right);
   }
+
+  if (frontmatter?.content && typeof frontmatter.content === 'object') {
+    state.content = { ...frontmatter.content };
+  } else {
+    state.content = {};
+  }
 }
 
 export async function importMDXContent(content) {

@@ -97,6 +97,9 @@ export function renderRegionsTable() {
         </select>
       </td>
       <td>
+        <textarea data-box-id="${box.id}" data-field="content" placeholder="Enter slide content...">${state.content[box.id] || ''}</textarea>
+      </td>
+      <td>
         <textarea data-box-id="${box.id}" data-field="llmHint" placeholder="LLM hint...">${box.metadata.llmHint}</textarea>
       </td>
       <td>
@@ -145,6 +148,8 @@ export function renderRegionsTable() {
         shouldRefreshTable = true;
       } else if (field === 'llmHint') {
         box.metadata.llmHint = e.target.value;
+      } else if (field === 'content') {
+        state.content[boxId] = e.target.value;
       }
       
       state.metadata[boxId] = box.metadata;
@@ -207,6 +212,7 @@ export function clearAllRegions() {
     pushHistory();
     state.boxes = [];
     state.metadata = {};
+    state.content = {};
     state.selectedBoxId = null;
     renderRegionsTable();
     // Trigger re-renders

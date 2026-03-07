@@ -312,7 +312,8 @@ export function renderSlidePreview(container, resizeEntry) {
       region.style.alignItems = region.style.alignItems || 'flex-start';
       const body = document.createElement('p');
       body.className = 'slide-preview-region-copy';
-      const basePreviewText = resolvePreviewText(box, role);
+      const userContent = state.content && state.content[box.id];
+      const basePreviewText = userContent || resolvePreviewText(box, role);
       const footerAwareCopy = resolveFooterCopy({ box, role, previewText: basePreviewText, brandSnapshot });
       const systemCopy = resolvePageNumberCopy({ role, pagination });
       const resolvedCopy = systemCopy || footerAwareCopy || basePreviewText || '';

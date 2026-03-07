@@ -18,6 +18,7 @@ const DEFAULT_STATE = {
   isDrawing: false,
   dragStart: null,
   metadata: {},
+  content: {},
   guideSettings: {
     center: true,
     halves: false,
@@ -86,6 +87,7 @@ function snapshotState() {
     metadata: Object.fromEntries(
       Object.entries(state.metadata).map(([id, metadata]) => [id, { ...metadata }])
     ),
+    content: { ...state.content },
     selectedBoxId: state.selectedBoxId || null,
     brand: state.brand ? { ...state.brand } : null,
     pagination: state.pagination ? { ...state.pagination } : null,
@@ -122,6 +124,7 @@ export function restoreSnapshot(snapshot) {
   state.boxes.forEach((box) => {
     state.metadata[box.id] = box.metadata;
   });
+  state.content = snapshot.content ? { ...snapshot.content } : {};
   state.selectedBoxId = snapshot.selectedBoxId || null;
   if (snapshot.brand) {
     const applied = applyBrandTheme(snapshot.brand.id, snapshot.brand.variant);

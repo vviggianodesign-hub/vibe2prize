@@ -15,6 +15,13 @@
     <!-- React and ReactDOM for production render -->
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "pptxgenjs": "https://esm.sh/pptxgenjs@4.0.1"
+      }
+    }
+    </script>
   </head>
   <body>
     <header>
@@ -236,6 +243,7 @@
               <th>Required</th>
               <th>Input Type</th>
               <th>Field Types</th>
+              <th>Content (Markdown/HTML)</th>
               <th>LLM Hint</th>
               <th>Actions</th>
             </tr>
@@ -270,6 +278,7 @@
           <button id="openCssGrid" class="ghost-btn" type="button">CSS Grid Guide</button>
           <button id="copySnippet" class="primary-btn" type="button">Copy Snippet</button>
           <button id="saveMdx" class="primary-btn" type="button">Save to MDX</button>
+          <button id="downloadPptx" class="primary-btn" type="button">Download PPTX</button>
         </div>
         <textarea id="snippetOutput" readonly placeholder="Template JSON will appear here..."></textarea>
       </section>
@@ -355,6 +364,7 @@
             openCssGrid: document.getElementById('openCssGrid'),
             copySnippet: document.getElementById('copySnippet'),
             saveMdx: document.getElementById('saveMdx'),
+            downloadPptx: document.getElementById('downloadPptx'),
             importMdxBtn: document.getElementById('importMdxBtn'),
             mdxFileInput: document.getElementById('mdxFileInput'),
             deleteSelectedBtn: document.getElementById('deleteSelectedBtn'),
@@ -403,7 +413,7 @@
           TemplateStudio.renderSnippet();
           TemplateStudio.updateSelectionControls(controls);
 
-          previewGrid.addEventListener('mousedown', (e) => {
+          const handlePointerDown = (e) => {
             if (TemplateStudio.isEditableTarget(e)) return;
             if (e.target.classList.contains('grid-block') || e.target.closest('.grid-block')) {
               return;
@@ -413,8 +423,11 @@
             const cellPixelSizeX = rect.width / TemplateStudio.state.columns;
             const cellPixelSizeY = rect.height / TemplateStudio.state.rows;
 
-            const mouseGridX = Math.floor((e.clientX - rect.left) / cellPixelSizeX);
-            const mouseGridY = Math.floor((e.clientY - rect.top) / cellPixelSizeY);
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            const mouseGridX = Math.floor((clientX - rect.left) / cellPixelSizeX);
+            const mouseGridY = Math.floor((clientY - rect.top) / cellPixelSizeY);
 
             const box = TemplateStudio.getBoxAtGrid(mouseGridX, mouseGridY);
             if (box) {
@@ -432,15 +445,15 @@
                 startGridY: mouseGridY,
                 currentGridX: mouseGridX,
                 currentGridY: mouseGridY,
-                startClientX: e.clientX,
-                startClientY: e.clientY,
+                startClientX: clientX,
+                startClientY: clientY,
                 hasMoved: false
               };
               previewGrid.classList.add('drawing');
             }
-          });
+          };
 
-          previewGrid.addEventListener('mousemove', (e) => {
+          const handlePointerMove = (e) => {
             TemplateStudio.handleMouseMove(
               e,
               previewGrid,
@@ -448,22 +461,9 @@
                 renderCanvas();
               }
             );
-          });
+          };
 
-          previewToggleButtons.forEach((btn) => {
-            btn.addEventListener('click', () => {
-              const view = btn.dataset.previewView;
-              previewToggleButtons.forEach((button) => button.classList.toggle('active', button === btn));
-              workbench.dataset.view = view;
-              if (view === 'canvas') {
-                renderCanvas();
-              } else {
-                renderActivePreview({ forceProduction: view === 'production' });
-              }
-            });
-          });
-
-          document.addEventListener('mouseup', (e) => {
+          const handlePointerUp = (e) => {
             TemplateStudio.handleMouseUp(
               e,
               previewGrid,
@@ -480,7 +480,40 @@
 
             TemplateStudio.updateSelectionControls(controls);
             renderActivePreview({ forceProduction: workbench.dataset.view === 'production' });
+          };
+
+          previewGrid.addEventListener('mousedown', handlePointerDown);
+          previewGrid.addEventListener('mousemove', handlePointerMove);
+          document.addEventListener('mouseup', handlePointerUp);
+
+          // Touch support for iPad
+          previewGrid.addEventListener('touchstart', (e) => {
+              if (TemplateStudio.isEditableTarget(e)) return;
+              handlePointerDown(e);
+          }, { passive: false });
+
+          previewGrid.addEventListener('touchmove', (e) => {
+              if (TemplateStudio.state.isDrawing || TemplateStudio.state.isDragging || TemplateStudio.state.isResizing) {
+                  e.preventDefault(); // Prevent scrolling while drawing/dragging
+              }
+              handlePointerMove(e);
+          }, { passive: false });
+
+          document.addEventListener('touchend', handlePointerUp);
+
+          previewToggleButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const view = btn.dataset.previewView;
+              previewToggleButtons.forEach((button) => button.classList.toggle('active', button === btn));
+              workbench.dataset.view = view;
+              if (view === 'canvas') {
+                renderCanvas();
+              } else {
+                renderActivePreview({ forceProduction: view === 'production' });
+              }
+            });
           });
+
 
           document.addEventListener('keydown', (e) => {
             if (TemplateStudio.isEditableTarget(e)) return;

@@ -1,5 +1,6 @@
 import { state, pushHistory, captureHistoryForInteraction, resetInteractionHistory, handleUndo, handleRedo } from './state.js';
 import { downloadMdxFile } from './persistence/mdx.js';
+import { exportToPptx } from './persistence/pptx.js';
 import { renderPreview } from './canvas/renderer.js';
 import { renderSlidePreview } from './canvas/rendered-view.js';
 import { renderProductionSlide, cleanupProductionRender } from './canvas/production-renderer.js';
@@ -142,6 +143,7 @@ export {
   handleUndo, 
   handleRedo, 
   downloadMdxFile,
+  exportToPptx,
   renderPreview,
   renderSlidePreview,
   renderProductionSlide,
@@ -234,6 +236,7 @@ export function init() {
     captureHistoryForInteraction,
     resetInteractionHistory,
     downloadMdxFile,
+    exportToPptx,
     applyBrandTheme,
     listBrandOptions,
     listBrandThemeOptions,
